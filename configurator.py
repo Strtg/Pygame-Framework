@@ -18,5 +18,5 @@ class Configurator(dict):
             else:
                 print 'OK'
 
-        self.update({'asd': 12, 'fssfd': 345345})
+        self.update({'asd': 12, 'fs8876fd': 345345})
         print self['asd']
