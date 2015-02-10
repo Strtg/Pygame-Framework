@@ -1,29 +1,29 @@
+from __future__ import print_function
 import os
 import defaults
-_DIR = 'config' #  directory for config data
-_ASSIGN_CHAR = '='
-_NEW_LINE_CHAR = ';'
+from const import *
 
-class Configurator(dict):
-    def __init__(self, filename):
-        self.filename = filename
-        self.fullpath = os.path.join(_DIR, self.filename)
 
-        self.update(defaults.make(self.filename))
 
-    def _create_directory_if_needed(self):
-        if os.path.isdir(_DIR) is False:
-            print 'Directory', _DIR, 'doesn\'t exist.'
-            os.mkdir(_DIR)
-            print 'os.mkdir(_DIR)'
-            print 'So',_DIR, 'directory created.'
-        else:
-            print 'Directory', _DIR, 'exists.'
+class Configurator(object):
+    def __init__(self):
+        self.missing_dirs = []
+        self._check_dirs()
 
-    def _create_file_if_needed(self):
-        if os.path.isfile(self.fullpath) is False:
-            print 'File', self.filename, 'in directory', _DIR, 'doesn\'t exist'
-            pass
-        else:
-            print 'OK'
+    def _check_dirs(self):
+        self.missing_dirs = []
+        print ('')
+        for d in defaults.dir_tree():
+            if os.path.isdir(d):
+                print ('OK:\t\t', d, 'exists.')
+
+            else:
+                print ('WARNING:', d, 'not exists.')
+                self._create_dir(d)
+
+    def _create_dir(self, d):
+        os.mkdir(d)
+
+        print ('\t\t', d, 'created.')
+
 

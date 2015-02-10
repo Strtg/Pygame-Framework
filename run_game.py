@@ -2,17 +2,18 @@
 # -*- coding: utf-8 -*-
 
 import pygame
-import configurator, renderer
 pygame.init()
 
-key_config = configurator.Configurator('keyboard')
-options = configurator.Configurator('options')
+import configurator, renderer, game
 
-
-
-### test shit
-print key_config
+configurator = configurator.Configurator()
 
 renderer = renderer.Renderer((550,550), fullscreen=False)
-renderer.render()
+game = game.Game(renderer)
+
+pygame.time.wait(4000)
+
+for i in range(1000):
+    game.update()
+    renderer.render()
 pygame.time.wait(4000)

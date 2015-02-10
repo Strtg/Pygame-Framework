@@ -8,6 +8,7 @@ This module contain file names, directory names and game name.
 GAME_NAME = 'Basic Framework Made of Pygame'
 
 # directories
+MOD_DIR = 'mods'
 OUT_DIR = 'frontend'  # the directory for front-end game data like graphics and sounds that can be safely modify
 IN_DIR = 'backend'  # the directory for back-end game data like monster or item statistics
 # that can be modded but required a new game to work
