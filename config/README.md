@@ -1,0 +1,1 @@
+# Directory for game configuration, keyboard setup, user preferences etc.
