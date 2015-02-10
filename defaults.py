@@ -1,30 +1,31 @@
+"""
+Module with just two simply function to create default content for configuration files.
 
-def make(w):
+Used when configuration files can not be used for some reasons.
+"""
 
-    def make_keyboard():
-        dict_with_options = {}
-        dict_with_options.update({
-            'fps_limit': 200,
-            'resolution': (400, 300),
-            'fullscreen': 0,
-            'debug': 0,
-        })
-        return dict_with_options
+def config():
+    """
+    Returns hardcoded tuple of strings with configuration data.
 
-    def make_options():
-        dict_with_options = {}
-        dict_with_options.update({
-            'K_p': 'pause',
-            'K_ESCAPE': 'quit',
-            'QUIT': 'quit',
-            'K_q': 'quit',
-        })
-        return dict_with_options
+    Used when the configuration file doesn't exist.
+    """
+    t = tuple(  'fps_limit: 200;\r\n',
+                'resolution: (400, 300);\r\n',
+                'fullscreen: 0;\r\n',
+                'debug: 0;\r\n',
+    )
+    return t
 
-    what = w
-    if what == 'keyboard':
-        return make_keyboard()
-    elif what == 'options':
-        return make_options()
-    else:
-        print 'Errorr in defaults.make().'
+def keys():
+    """
+    Returns hardcoded tuple of strings with keys configuration.
+
+    Used when the keys file doesn't exist.
+    """
+    t = tuple(  'K_p: pause;\r\n',
+                'K_ESCAPE: quit;\r\n',
+                'QUIT: quit;\r\n',
+                'K_q: quit;\r\n',
+    )
+    return t

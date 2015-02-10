@@ -1,6 +1,6 @@
 import os
 import defaults
-_DIR = 'cfg' #  directory for config data
+_DIR = 'config' #  directory for config data
 _ASSIGN_CHAR = '='
 _NEW_LINE_CHAR = ';'
 

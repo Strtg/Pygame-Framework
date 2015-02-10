@@ -1,4 +1,5 @@
 import pygame
+import const
 
 class Renderer(object):
 
@@ -16,6 +17,8 @@ class Renderer(object):
         if self.fullscreen:
             self.flags = self.flags | pygame.FULLSCREEN
         pygame.display.set_mode((screen_size), self.flags)
+        pygame.display.set_caption(const.GAME_NAME)
+
         self.image = pygame.display.get_surface()
         self.rect = self.image.get_rect()
 
