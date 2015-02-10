@@ -8,7 +8,7 @@ class Renderer(object):
         self.used_fps = fps
         self.pause_fps = 5
         self.reconfigure(screen_size, fullscreen, fps)
-        self.sprite_container = pygame.sprite.LayeredUpdates()
+        self.sprite_container = pygame.sprite.LayeredDirty()
 
 
     def reconfigure(self, screen_size, fullscreen=False, fps=2000):

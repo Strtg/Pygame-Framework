@@ -1,6 +1,11 @@
 #! /usr/bin/env python2
 # -*- coding: utf-8 -*-
+"""
+This module is the game starter. Run it for play the game.
 
+Pygame is initialized here. The main game objects are created (configurator, renderer, game etc.).
+The main loop is here.
+"""
 import pygame
 pygame.init()
 
