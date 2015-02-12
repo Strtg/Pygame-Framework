@@ -15,6 +15,9 @@ c = configurator.Configurator()
 
 r = renderer.Renderer(c)
 g = game.Game(r, c)
+g.info = 'crap game'
+g.info2 = 'really crap game!!!'
+
 e = eventer.Eventer(c, g, r)
 
 

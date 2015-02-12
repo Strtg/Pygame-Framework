@@ -12,7 +12,7 @@ def config():
 
     Used when the configuration file doesn't exist.
     """
-    d = {   'maxfps': 10,
+    d = {   'maxfps': 100,
             'resolution': (400, 400),
             'fullscreen': 0,
             'debug': 0
@@ -26,9 +26,12 @@ def keys():
     Used when the keys file doesn't exist.
     """
     d = {  'K_p': 'pause',
-            'K_ESCAPE': 'quit',
+            'K_ESCAPE': 'main_menu',
             'QUIT': 'quit',
-            'K_q': 'quit'
+            'K_q': 'quit',
+            'K_s': 'save',
+            'K_l': 'load',
+            'K_i': 'show_info'
         }
     return d
 

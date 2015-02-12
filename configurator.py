@@ -28,7 +28,11 @@ class Configurator(object):
         self._load_from_file(self.keys_from_file, const.CONFIG_DIR + os.sep + const.KEYS_FILE)
         print(self.keys_from_file)
 
-
+        # merge
+        self.configs.update(self.configs_from_file)
+        print('After merging:', self.configs)
+        self.keys.update(self.keys_from_file)
+        print('After merging:', self.keys)
 
     def _load_from_file(self, d, f):
         print('BEGINING OF LOAD', f + '...')
@@ -51,7 +55,6 @@ class Configurator(object):
 
 
 
-        print(f, 'LOADED.')
 
     def _reconfigure_from_files(self, dict, file):
         print('Loading data from', file +'...')

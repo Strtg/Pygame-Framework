@@ -1,5 +1,7 @@
-#this is file
-maxfps = 9999
-resolution = 400, 300
+# use "=" to separate key and value
+# use "#" to make comments
+
+maxfps = 60
+resolution = 330, 500
 fullscreen = 0
 debug = 0 # this is debug

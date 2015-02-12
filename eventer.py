@@ -20,11 +20,25 @@ class Eventer(object):
                 for inpt in self.c.keys:
                     if eval(inpt) == event.key:
                         self.commands.append(self.c.keys[inpt])
-                        print ('Added', self.c.keys[inpt], 'command.')
-                        print ('The last element of the command list:', self.commands[-1] + '.')
+            else:
+                for inpt in self.c.keys:
+                    if eval(inpt) == event.type:
+                        self.commands.append(self.c.keys[inpt])
+            if self.commands:
+                print ('Added', self.c.keys[inpt], 'command.')
+                print ('The last element of the command list:', self.commands[-1] + '.')
+
         for command in self.commands:
             if command == 'pause':
                 pass
             elif command == 'quit':
                 pygame.quit()
                 sys.exit()
+            elif command == 'save':
+                self.g.save()
+            elif command == 'load':
+                self.g.load()
+            elif command == 'main_menu':
+                pass
+            elif command == 'show_info':
+                self.g.show_info()
