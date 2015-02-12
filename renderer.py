@@ -4,21 +4,22 @@ import const
 class Renderer(object):
 
 
-    def __init__(self, screen_size, fullscreen=False, fps=2000):
-        self.used_fps = fps
+    def __init__(self, configurator):
+        self.c = configurator
+        self.used_fps = self.c.configs['maxfps']
         self.pause_fps = 5
-        self.reconfigure(screen_size, fullscreen, fps)
+        self.reconfigure()
         self.sprite_container = pygame.sprite.LayeredDirty()
 
 
-    def reconfigure(self, screen_size, fullscreen=False, fps=2000):
+    def reconfigure(self):
         self.flags = 0
-        self.normal_fps = fps
+        self.normal_fps = self.c.configs['maxfps']
         self.fpsclock = pygame.time.Clock()
-        self.fullscreen = fullscreen
+        self.fullscreen = self.c.configs['fullscreen']
         if self.fullscreen:
             self.flags = self.flags | pygame.FULLSCREEN
-        pygame.display.set_mode((screen_size), self.flags)
+        pygame.display.set_mode((self.c.configs['resolution']), self.flags)
         pygame.display.set_caption(const.GAME_NAME)
 
         self.image = pygame.display.get_surface()

@@ -21,4 +21,4 @@ SND_DIR = 'sound'  # the directory for sound
 # files
 CONFIG_FILE = 'config.txt'  # the name of file for configuration data (game options)
 KEYS_FILE = 'keys.txt'  # The name of file for
-CONFIG_FILE_FORMAT = ('=',';','#')  # (name-value separator, end line, comment)
+CONFIG_SEPS = ('=', '#')  # (name-value separator, comment)

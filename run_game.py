@@ -9,16 +9,16 @@ The main loop is here.
 import pygame
 pygame.init()
 
-import configurator, renderer, game
+import configurator, renderer, game, eventer
 
-configurator = configurator.Configurator()
+c = configurator.Configurator()
 
-renderer = renderer.Renderer((550,550), fullscreen=False)
-game = game.Game(renderer)
+r = renderer.Renderer(c)
+g = game.Game(r, c)
+e = eventer.Eventer(c, g, r)
 
-pygame.time.wait(4000)
 
-for i in range(1000):
-    game.update()
-    renderer.render()
-pygame.time.wait(4000)
+while True:
+    e.handle()
+    g.update()
+    r.render()

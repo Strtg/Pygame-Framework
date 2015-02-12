@@ -12,12 +12,12 @@ def config():
 
     Used when the configuration file doesn't exist.
     """
-    t = (   'maxfps: 200;\r\n',
-            'resolution: (400, 300);\r\n',
-            'fullscreen: 0;\r\n',
-            'debug: 0;\r\n',
-    )
-    return t
+    d = {   'maxfps': 10,
+            'resolution': (400, 400),
+            'fullscreen': 0,
+            'debug': 0
+        }
+    return d
 
 def keys():
     """
@@ -25,12 +25,12 @@ def keys():
 
     Used when the keys file doesn't exist.
     """
-    t = (  'K_p: pause;\r\n',
-            'K_ESCAPE: quit;\r\n',
-            'QUIT: quit;\r\n',
-            'K_q: quit;\r\n',
-    )
-    return t
+    d = {  'K_p': 'pause',
+            'K_ESCAPE': 'quit',
+            'QUIT': 'quit',
+            'K_q': 'quit'
+        }
+    return d
 
 def dir_tree():
     """

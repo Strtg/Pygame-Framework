@@ -1,0 +1,5 @@
+#this is file
+maxfps = 9999
+resolution = 400, 300
+fullscreen = 0
+debug = 0 # this is debug

@@ -1,7 +1,14 @@
+import manager
+import pygame
+
 class Game(object):
-    def __init__(self, renderer):
+    def __init__(self, renderer, configurator):
         self.is_pause = False
-        self.renderer = renderer
+        self.r = renderer
+        self.c = configurator
+
+
+        self.m = manager.Manager()
         self._init_objects()
 
 
@@ -12,6 +19,6 @@ class Game(object):
 
     def update(self):
         if self.is_pause:
-            self.renderer.set_pause(True)
+            self.r.set_pause(True)
         else:
             pass
