@@ -18,3 +18,4 @@ sky = 110
 interface = 120
 alerts = 130
 hints = 140
+main_menu = 160

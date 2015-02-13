@@ -25,12 +25,11 @@ class Eventer(object):
                     if eval(inpt) == event.type:
                         self.commands.append(self.c.keys[inpt])
             if self.commands:
-                print ('Added', self.c.keys[inpt], 'command.')
                 print ('The last element of the command list:', self.commands[-1] + '.')
 
         for command in self.commands:
             if command == 'pause':
-                pass
+                self.g.switch_pause()
             elif command == 'quit':
                 pygame.quit()
                 sys.exit()

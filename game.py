@@ -46,3 +46,12 @@ class Game(object):
     def show_info(self):
         print (self.info)
         print (self.info2)
+
+
+    def switch_pause(self):
+        if self.is_pause:
+            self.is_pause = False
+            self.r.set_pause(False)
+        else:
+            self.is_pause = True
+            self.r.set_pause(True)

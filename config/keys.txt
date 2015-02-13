@@ -1,0 +1,10 @@
+# use "=" to separate key and value
+# use "#" to make comments
+
+K_p = pause
+K_ESCAPE = main_menu
+QUIT = quit
+K_q = quit
+K_s = save
+K_l = load
+K_i = show_info

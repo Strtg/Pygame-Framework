@@ -51,7 +51,8 @@ class Configurator(object):
                 print ('come detected in', d[e])
                 d[e] = tuple(map(int, d[e].split(',')))
             else:
-                d[e] = int(d[e])
+                if d[e].isdigit():
+                    d[e] = int(d[e])
 
 
 
