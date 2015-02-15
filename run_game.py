@@ -9,14 +9,17 @@ The main loop is here.
 import pygame
 pygame.init()
 
-import configurator, renderer, game, eventer
+import configurator, renderer, game, eventer, game_object
 
 c = configurator.Configurator()
 
 r = renderer.Renderer(c)
 g = game.Game(r, c)
-g.info = 'crap game'
-g.info2 = 'really crap game!!!'
+g.name = 'crap game'
+g.difficulty = 'really crap game!!!'
+
+
+
 
 e = eventer.Eventer(c, g, r)
 

@@ -41,3 +41,5 @@ class Eventer(object):
                 pass
             elif command == 'show_info':
                 self.g.show_info()
+            elif command == 'new_game':
+                self.g.new_game()

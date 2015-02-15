@@ -2,12 +2,14 @@ from __future__ import print_function
 import os
 import defaults
 import const
-import re
+import game_sprite
 
 class Configurator(object):
     def __init__(self):
         self.configs = {}  # all here is made just for this sucker
         self.keys = {}  # and this
+        self.loaded_images = {}
+
         self.configs_from_file = {}
         self.keys_from_file = {}
 
@@ -34,6 +36,8 @@ class Configurator(object):
         self.keys.update(self.keys_from_file)
         print('After merging:', self.keys)
 
+        self.load_images()
+
     def _load_from_file(self, d, f):
         print('BEGINING OF LOAD', f + '...')
         d.clear()
@@ -55,6 +59,25 @@ class Configurator(object):
                     d[e] = int(d[e])
 
 
+    def load_images(self):
+        self.loaded_images = {}
+        gfx_dir = const.MOD_DIR + os.sep + const.VANILLA_DIR + os.sep +\
+                        const.OUT_DIR + os.sep + const.GFX_DIR
+        dirtree = [i for i in os.walk(gfx_dir)]
+        print (dirtree[0][2])
+        filepaths = []
+        for tup in dirtree:
+            if tup[2]:
+                for fil in tup[2]:
+                    if fil.endswith('.png'):
+                        filepaths.append(tup[0] + os.sep + fil)
+        print('znalezione:')
+        print(filepaths)
+        for path in filepaths:
+            print(path)
+            print(path.rsplit(os.sep, 1)[-1])
+            self.loaded_images.update({path.rsplit(os.sep, 1)[-1].rsplit('.png')[0]:game_sprite.Sprite(path)})
+        print (self.loaded_images)
 
 
     def _reconfigure_from_files(self, dict, file):

@@ -20,6 +20,8 @@ class Renderer(object):
         if self.fullscreen:
             self.flags = self.flags | pygame.FULLSCREEN
         pygame.display.set_mode((self.c.configs['resolution']), self.flags)
+        for img in self.c.loaded_images:
+            self.c.loaded_images[img].image.convert()
         pygame.display.set_caption(const.GAME_NAME)
 
         self.image = pygame.display.get_surface()

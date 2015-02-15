@@ -8,3 +8,4 @@ K_q = quit
 K_s = save
 K_l = load
 K_i = show_info
+K_n = new_game
