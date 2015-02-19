@@ -9,9 +9,11 @@ class Configurator(object):
         self.configs = {}  # all here is made just for this sucker
         self.keys = {}  # and this
         self.loaded_images = {}
-
+        self.images_paths = []
         self.configs_from_file = {}
         self.keys_from_file = {}
+        self.active_mods = []
+
 
         print()
         self._check_dirs()
@@ -36,7 +38,40 @@ class Configurator(object):
         self.keys.update(self.keys_from_file)
         print('After merging:', self.keys)
 
-        self.load_images()
+        self.active_mods = self.load_active_mods()
+
+        self.loaded_images = self.load_images()
+
+    def load_active_mods(self):
+        print('FUNKCJA LOAD_ACTIVE_MODS')
+        alist = []
+        f = open(const.MOD_DIR + os.sep + const.ACTIVE_MODS)
+        for l in f:
+            e = l.split(const.CONFIG_SEPS[1])[0].strip()  # hope it is key and value
+            if e:
+                print('to nie komentarz!')
+                print(e)
+                notempty = e.split(const.CONFIG_SEPS[0])  # this is list of two elements: key and value
+                mod_name = notempty[0].strip()
+                mod_subdir = notempty[1].strip()
+                print('mod to:', mod_name)
+                print('katalog to:', mod_subdir)
+                if mod_subdir == '' or mod_subdir == 'all':
+                    alist.append(const.MOD_DIR + os.sep + mod_name)
+                    print('znaleziono mod do calkowitego wladowania.')
+                    print('lista wyglada tak', alist)
+                else:
+                    print('jest to jebane else czy nie?', mod_name)
+                    for root, dirs, files in os.walk(const.MOD_DIR + os.sep + mod_name):
+                        print('jest else', root, dirs, files)
+                        for dir in dirs:
+                            print('test if:', dir, mod_subdir)
+                            if dir == mod_subdir:
+                                alist.append(root + os.sep +dir)
+        f.close()
+        print ('ACTIVE MODS: ', alist)
+        return alist
+
 
     def _load_from_file(self, d, f):
         print('BEGINING OF LOAD', f + '...')
@@ -57,6 +92,15 @@ class Configurator(object):
             else:
                 if d[e].isdigit():
                     d[e] = int(d[e])
+
+    def find_files_deep(self, directory, extension=''):
+        list = []
+        for root, dirs, files in os.walk(directory):
+            for file in files:
+                if file.endswith(extension):
+                    list.append(os.path.join(root, file))
+        return list
+
 
 
     def load_images(self):

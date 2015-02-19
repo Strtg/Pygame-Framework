@@ -1,5 +1,4 @@
 from __future__ import print_function
-import manager
 import pygame
 import pickle
 import const
@@ -21,9 +20,7 @@ class Game(object):
         self.name = name
         self.difficulty = difficulty
         self.date_of_creating = datetime.datetime.now()
-        self.objects = []
-        self._init_objects()
-        self.m = manager.Manager()
+        self.m = Manager()  # object manager
         print ('NEW GAME!!!')
 
     def save(self):
@@ -53,9 +50,7 @@ class Game(object):
 
 
 
-    def _init_objects(self):
-        self.objects.append(game_object.Visible(l=layers.background, app='background'))
-        self.objects.append(game_object.Visible(l=layers.interface, app='logo'))
+
 
 
 
@@ -79,3 +74,14 @@ class Game(object):
         else:
             self.is_pause = True
             self.r.set_pause(True)
+
+
+
+class Manager(object):
+    """
+    Object manager.
+    """
+    def __init__(self):
+        self.objects = []
+
+

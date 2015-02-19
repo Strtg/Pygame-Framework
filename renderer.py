@@ -7,6 +7,7 @@ class Renderer(object):
         self.c = configurator
         self.used_fps = self.c.configs['maxfps']
         self.pause_fps = 1
+        self.images = []  # container for images
         self.reconfigure()
         self.sprite_container = pygame.sprite.LayeredDirty()
 
@@ -20,12 +21,17 @@ class Renderer(object):
         if self.fullscreen:
             self.flags = self.flags | pygame.FULLSCREEN
         pygame.display.set_mode((self.c.configs['resolution']), self.flags)
-        for img in self.c.loaded_images:
+        for img in self.images:
             self.c.loaded_images[img].image.convert()
         pygame.display.set_caption(const.GAME_NAME)
 
         self.image = pygame.display.get_surface()
         self.rect = self.image.get_rect()
+        self.images = self.load_images()
+
+    def load_images(self):
+        return []
+
 
     def set_pause(self, bool):
         if bool:
@@ -36,7 +42,7 @@ class Renderer(object):
     def render(self):
         self.sprite_container.update()
 
-        self.image.fill((90,0,0))
+        # self.image.fill((90,0,0))
         self.sprite_container.draw(self.image)
         self.fpsclock.update(self.used_fps)
         self.image.blit(self.fpsclock.image,(0,0))
