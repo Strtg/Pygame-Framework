@@ -1,5 +1,5 @@
 import pygame
-import const
+import config
 
 class Renderer(object):
 
@@ -23,7 +23,7 @@ class Renderer(object):
         pygame.display.set_mode((self.c.configs['resolution']), self.flags)
         for img in self.images:
             self.c.loaded_images[img].image.convert()
-        pygame.display.set_caption(const.GAME_NAME)
+        pygame.display.set_caption(config.GAME_NAME)
 
         self.image = pygame.display.get_surface()
         self.rect = self.image.get_rect()

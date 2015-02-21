@@ -4,7 +4,7 @@ Module with just two simply function to create default content for configuration
 Used when configuration files can not be used for some reasons.
 """
 from os import sep
-from const import *
+from config import *
 
 def config():
     """

@@ -1,7 +1,7 @@
 from __future__ import print_function
 import pygame
 import pickle
-import const
+import config
 import os
 import datetime
 import game_object
@@ -24,7 +24,7 @@ class Game(object):
         print ('NEW GAME!!!')
 
     def save(self):
-        f = open(const.SAVE_DIR + os.sep + 'savedgame', 'wb')
+        f = open(config.SAVE_DIR + os.sep + 'savedgame', 'wb')
         pickler = pickle.Pickler(f, 2)
         pickler.dump(self.is_pause)
         pickler.dump(self.name)
@@ -37,7 +37,7 @@ class Game(object):
         del pickler
 
     def load(self):
-        f = open(const.SAVE_DIR + os.sep + 'savedgame', 'rb')
+        f = open(config.SAVE_DIR + os.sep + 'savedgame', 'rb')
         unpickler = pickle.Unpickler(f)
         self.is_pause = unpickler.load()
         self.name = unpickler.load()

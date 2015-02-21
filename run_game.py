@@ -8,8 +8,15 @@ The main loop is here.
 """
 import pygame
 pygame.init()
+import config
+# import configurator, renderer, game, eventer, game_object
 
-import configurator, renderer, game, eventer, game_object
+
+config.setup()
+
+listaa = config.do_list_from_file(config.MODS_FILE)
+print listaa
+
 
 c = configurator.Configurator()
 

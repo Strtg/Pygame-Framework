@@ -1,7 +1,7 @@
 from __future__ import print_function
 import os
 import defaults
-import const
+import config
 import game_sprite
 
 class Configurator(object):
@@ -18,8 +18,8 @@ class Configurator(object):
         print()
         self._check_dirs()
         print()
-        self._check_file(const.CONFIG_FILE)
-        self._check_file(const.KEYS_FILE)
+        self._check_file(config.CONFIG_FILE)
+        self._check_file(config.KEYS_FILE)
 
         print()
         self.configs.update(defaults.config())  # load defaults config
@@ -27,9 +27,9 @@ class Configurator(object):
         self.keys.update(defaults.keys())  # load defaults keys
         print(self.keys)
         print()
-        self._load_from_file(self.configs_from_file, const.CONFIG_DIR + os.sep + const.CONFIG_FILE)
+        self._load_from_file(self.configs_from_file, config.CONFIG_DIR + os.sep + config.CONFIG_FILE)
         print(self.configs_from_file)
-        self._load_from_file(self.keys_from_file, const.CONFIG_DIR + os.sep + const.KEYS_FILE)
+        self._load_from_file(self.keys_from_file, config.CONFIG_DIR + os.sep + config.KEYS_FILE)
         print(self.keys_from_file)
 
         # merge
@@ -45,24 +45,24 @@ class Configurator(object):
     def load_active_mods(self):
         print('FUNKCJA LOAD_ACTIVE_MODS')
         alist = []
-        f = open(const.MOD_DIR + os.sep + const.ACTIVE_MODS)
+        f = open(config.MOD_DIR + os.sep + config.ACTIVE_MODS)
         for l in f:
-            e = l.split(const.CONFIG_SEPS[1])[0].strip()  # hope it is key and value
+            e = l.split(config.CONFIG_SEPS[1])[0].strip()  # hope it is key and value
             if e:
                 print('to nie komentarz!')
                 print(e)
-                notempty = e.split(const.CONFIG_SEPS[0])  # this is list of two elements: key and value
+                notempty = e.split(config.CONFIG_SEPS[0])  # this is list of two elements: key and value
                 mod_name = notempty[0].strip()
                 mod_subdir = notempty[1].strip()
                 print('mod to:', mod_name)
                 print('katalog to:', mod_subdir)
                 if mod_subdir == '' or mod_subdir == 'all':
-                    alist.append(const.MOD_DIR + os.sep + mod_name)
+                    alist.append(config.MOD_DIR + os.sep + mod_name)
                     print('znaleziono mod do calkowitego wladowania.')
                     print('lista wyglada tak', alist)
                 else:
                     print('jest to jebane else czy nie?', mod_name)
-                    for root, dirs, files in os.walk(const.MOD_DIR + os.sep + mod_name):
+                    for root, dirs, files in os.walk(config.MOD_DIR + os.sep + mod_name):
                         print('jest else', root, dirs, files)
                         for dir in dirs:
                             print('test if:', dir, mod_subdir)
@@ -78,10 +78,10 @@ class Configurator(object):
         d.clear()
         file = open(f)
         for s in file:  # in every file line do:
-            e = s.split(const.CONFIG_SEPS[1])[0].strip()  # hope it is key and value
+            e = s.split(config.CONFIG_SEPS[1])[0].strip()  # hope it is key and value
             print(e)
             if e:
-                e = e.split(const.CONFIG_SEPS[0])  # this is list of two elements: key and value
+                e = e.split(config.CONFIG_SEPS[0])  # this is list of two elements: key and value
                 d.update({e[0].strip():e[1].strip()})
         file.close()
         print('Converting...')
@@ -105,8 +105,8 @@ class Configurator(object):
 
     def load_images(self):
         self.loaded_images = {}
-        gfx_dir = const.MOD_DIR + os.sep + const.VANILLA_DIR + os.sep +\
-                        const.OUT_DIR + os.sep + const.GFX_DIR
+        gfx_dir = config.MOD_DIR + os.sep + config.VANILLA_DIR + os.sep +\
+                        config.OUT_DIR + os.sep + config.GFX_DIR
         dirtree = [i for i in os.walk(gfx_dir)]
         print (dirtree[0][2])
         filepaths = []
@@ -142,7 +142,7 @@ class Configurator(object):
 
     def _check_file(self, f):
         print ('Checking', f, 'file...')
-        f = const.CONFIG_DIR + os.sep + f
+        f = config.CONFIG_DIR + os.sep + f
         if os.path.isfile(f):
             print ('OK:\t\t', f, 'exists.')
         else:
