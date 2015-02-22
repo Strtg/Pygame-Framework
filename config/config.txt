@@ -1,7 +1,4 @@
-# use ":" to separate key and value
-# use "#" to make comments
-
-maxfps: 10000
-resolution: 1366, 768
+maxfps: 100
+resolution: 400, 400
 fullscreen: 0
-debug: 0 # this is debug
+debug: 0

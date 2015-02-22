@@ -1,0 +1,15 @@
+# type here mod names and what you want (which directory) from that mod
+# for example:
+# awsomemod_1.3: all  # means you want all from that mod
+# bigger_realism_0.1: frontend  # means you want only graphics and sounds from that mod
+# subdirectories of typed directory are automatically loaded
+# you can type more than one mod in new lines
+# you can type the same mod more than ine time which is useful when you want to load more than one directories from the same mod
+# mods are loaded one after another from top to bottom
+# when a more than one mod modify the same things the mod loaded later will overwrite previous mod
+# vanilla is always loaded as the first "mod" even when it is not typed here
+
+awesome: all
+total_realism: snd
+awesome: gfx
+shit_modiffications: backend

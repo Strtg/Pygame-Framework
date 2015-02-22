@@ -8,30 +8,32 @@ The main loop is here.
 """
 import pygame
 pygame.init()
-import config
+from config import Config as C
+from render import Render as R
+
+
 # import configurator, renderer, game, eventer, game_object
 
 
-config.setup()
+C.setup()
+C.load_config()
+C.save_config()
 
-listaa = config.do_list_from_file(config.MODS_FILE)
-print listaa
+R.setup()
+R.load_resources()
 
-
-c = configurator.Configurator()
-
-r = renderer.Renderer(c)
-g = game.Game(r, c)
-g.name = 'crap game'
-g.difficulty = 'really crap game!!!'
-
+# r = renderer.Renderer(c)
+# g = game.Game(r, c)
+# g.name = 'crap game'
+# g.difficulty = 'really crap game!!!'
 
 
 
-e = eventer.Eventer(c, g, r)
 
-
-while True:
-    e.handle()
-    g.update()
-    r.render()
+# e = eventer.Eventer(c, g, r)
+#
+#
+# while True:
+#     e.handle()
+#     g.update()
+#     r.render()
