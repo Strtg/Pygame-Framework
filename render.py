@@ -71,9 +71,8 @@ class Render(object):
     @staticmethod
     # @debugator
     def render():
+        Render.image.fill((240,240,240))
         Render.sprite_container.update()
-
-        Render.image.fill((160,160,160))
         Render.sprite_container.draw(Render.image)
         Render.fpsclock.update(Render.used_fps)
         Render.image.blit(Render.fpsclock.image,(0,0))
@@ -92,15 +91,25 @@ class FpsClock(pygame.sprite.DirtySprite):
         self.rect = self.image.get_rect()
         self.clock.tick(fps)
 
-
 class SpriteManager(pygame.sprite.LayeredDirty):
     def __init__(self):
         super(SpriteManager, self).__init__()
 
-    def register_new(self, id):
-        pass
+    def register(self, pl, id):
+        data = pl.give_me_data(id)
+        self.add(Sprite(data['id'], data['appearance'], data['layer']))
+
+
 
 
 class Sprite(pygame.sprite.DirtySprite):
-    def __init__(self, obj):
+    def __init__(self, id, img, layer):
         super(Sprite, self).__init__()
+        self.id = id
+        self.layer = layer
+        self.image = pygame.image.load(Render.image_paths[img]).convert_alpha()
+        self.rect = self.image.get_rect()
+        # self.rect.center = Render.rect.center
+
+    def update(self):
+        self.dirty = 1

@@ -27,6 +27,7 @@ class Game(object):
         Game.date_of_creating = datetime.datetime.now()
 
         Game.playing = Playing()  # object manager and game instance to save/load
+        Game.playing.create_object(game_object.Visible(l=90, app='button01'))
         print ('NEW GAME!!!')
 
     @staticmethod
@@ -85,5 +86,12 @@ class Playing(object):  # object manager
 
     def create_object(self, obj):
         self.objects.update({obj.id: obj})
-        R.s
+        R.sprite_container.register(self, obj.id)
+
+    def give_me_data(self, id):
+        data = {}
+        data.update({'id': self.objects[id].id})
+        data.update({'appearance': self.objects[id].appearance})
+        data.update({'layer': self.objects[id].layer})
+        return data
 
