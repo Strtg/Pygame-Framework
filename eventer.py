@@ -2,44 +2,52 @@ from __future__ import print_function
 
 import pygame, sys
 from pygame.locals import *
+from config import Config as C
+from render import Render as R
+from game import Game as G
+
 
 class Eventer(object):
 
-    def __init__(self, configurator, game, renderer):
-        self.c = configurator
-        self.g = game
-        self.r = renderer
-        self.commands = []
-
-        pass
-
-    def handle(self):
-        self.commands = []
+    commands = []
+    
+    @staticmethod
+    def handle():
+        Eventer.commands = []
         for event in pygame.event.get():
             if event.type == KEYDOWN:
-                for inpt in self.c.keys:
+                for inpt in C.keys_dict:
                     if eval(inpt) == event.key:
-                        self.commands.append(self.c.keys[inpt])
+                        Eventer.commands.append(C.keys_dict[inpt])
             else:
-                for inpt in self.c.keys:
+                for inpt in C.keys_dict:
                     if eval(inpt) == event.type:
-                        self.commands.append(self.c.keys[inpt])
-            if self.commands:
-                print ('The last element of the command list:', self.commands[-1] + '.')
+                        Eventer.commands.append(C.keys_dict[inpt])
+            if Eventer.commands:
+                print ('The last element of the command list:', Eventer.commands[-1] + '.')
 
-        for command in self.commands:
+        for command in Eventer.commands:
             if command == 'pause':
-                self.g.switch_pause()
+                G.switch_pause()
             elif command == 'quit':
                 pygame.quit()
                 sys.exit()
             elif command == 'save':
-                self.g.save()
+                G.save()
             elif command == 'load':
-                self.g.load()
+                G.load()
             elif command == 'main_menu':
                 pass
             elif command == 'show_info':
-                self.g.show_info()
+                G.show_info()
             elif command == 'new_game':
-                self.g.new_game()
+                G.new_game()
+            elif command == 'reload_resources':
+                C.load_config()
+                R.setup()
+            elif command == 'switch_fullscreen':
+                if C.config_dict['fullscreen'] == 1:
+                    C.config_dict['fullscreen'] = 0
+                else:
+                    C.config_dict['fullscreen'] = 1
+                R.setup()

@@ -1,9 +1,9 @@
 import pygame
-import const
+import config
 import os
 
 class Sprite(pygame.sprite.DirtySprite):
-    def __init__(self, filepath, mod=const.VANILLA_DIR):
+    def __init__(self, filepath, mod=config.VANILLA_DIR):
         super(Sprite, self).__init__()
         self.filepath = filepath
 
