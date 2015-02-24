@@ -1,6 +1,6 @@
 from __future__ import print_function
 import os
-
+from debugator import debugator
 """
 The module for contains and for setup/configuration functions.
 
@@ -107,7 +107,7 @@ DEFAULT_MODS_FILE = [
 # FUNCTION DEFINITIONS #
 ########################
 
-
+@debugator
 def check_if_directory_exists(dirpath):
     print('Checking directory: {0} ...'.format(dirpath))
     if os.path.isdir(dirpath):
@@ -117,12 +117,12 @@ def check_if_directory_exists(dirpath):
         print('Warning:, {0} not exists.'.format(dirpath))
         return False
 
-
+@debugator
 def create_directory(dirpath):
     os.mkdir(dirpath)
     print('Directory {0} created'.format(dirpath))
 
-
+@debugator
 def check_if_file_exists(filepath):
     print('Checking file: {0} ...'.format(filepath))
     if os.path.isfile(filepath):
@@ -132,13 +132,13 @@ def check_if_file_exists(filepath):
         print('Warning:, {0} not exists.'.format(filepath))
         return False
 
-
+@debugator
 def create_file(filepath):
     file = open(filepath, 'w')
     file.close()
     print('File {0} created'.format(filepath))
 
-
+@debugator
 def do_list_from_file(filepath):  # returns a list of dicts
     # load to list
     raw_list = []
@@ -172,7 +172,7 @@ def do_list_from_file(filepath):  # returns a list of dicts
         dict_list.append(new_line)
     return dict_list
 
-
+@debugator
 def do_file_from_list(filepath, list):  # returns None
     lines_to_write = []
     for line in list:
@@ -192,7 +192,7 @@ def do_file_from_list(filepath, list):  # returns None
     file.writelines(lines_to_write)
     file.close()
 
-
+@debugator
 def do_dict_from_list(list):  # returns dictionary
     dictionary = {}
     for d in list:
@@ -206,7 +206,7 @@ def do_dict_from_list(list):  # returns dictionary
             dictionary[key] = map(int, dictionary[key].split(','))
     return dictionary
 
-
+@debugator
 def upgrade_dict_from_list(dict, list):  # returns None
     for d in list:
         if 'key' in d:
@@ -218,7 +218,7 @@ def upgrade_dict_from_list(dict, list):  # returns None
         elif ',' in dict[key]:
             dict[key] = map(int, dict[key].split(','))
 
-
+@debugator
 def upgrade_list_from_dict(list, dict):  # returns None
     for key, value in dict.items():
         for line in list:
@@ -228,7 +228,7 @@ def upgrade_list_from_dict(list, dict):  # returns None
                         line['value'] = str(value)[1:-1]
                     else:
                         line['value'] = str(value)
-
+@debugator
 def do_mods(_):  # returns list of paths
     mods = []
     for line in _:
@@ -254,11 +254,6 @@ def do_mods(_):  # returns list of paths
     return all_paths
 
 
-
-
-
-    return paths
-
 #################################
 #    CLASS CONFIG               #
 #################################
@@ -280,6 +275,7 @@ class Config(object):
 
 
     @staticmethod
+    @debugator
     def setup():  # returns None
         # create directory if needed
         for dir in BASIC_DIR_TREE:
@@ -298,6 +294,7 @@ class Config(object):
 
 
     @staticmethod
+    @debugator
     def load_config():
         Config.config_list = do_list_from_file(CONFIG_FILE)
         Config.keys_list = do_list_from_file(KEYS_FILE)

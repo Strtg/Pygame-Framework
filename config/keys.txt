@@ -5,4 +5,5 @@ K_q: quit
 K_s: save
 K_l: load
 K_i: show_info
+K_f: switch_fullscreen
 K_F5: reload_resources

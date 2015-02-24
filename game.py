@@ -1,80 +1,95 @@
 from __future__ import print_function
 import pygame
 import pickle
-import config
+
+from config import SAVES
+from config import Config as C
+from render import Render as R
 import os
 import datetime
 import game_object
 import layers
 
-class Game(object):
-    def __init__(self, renderer, configurator, name='Unnamed game', difficulty='normal'):
-        # will this work?
-        self.r = renderer
-        self.c = configurator
-        # create new game state
-        self.new_game()
 
-    def new_game(self, name='New Game created by new_game() function!!!', difficulty='normal'):
-        self.is_pause = False
-        self.name = name
-        self.difficulty = difficulty
-        self.date_of_creating = datetime.datetime.now()
-        self.m = Manager()  # object manager
+
+class Game(object):
+    is_pause = False
+    name = None
+    difficulty = None
+    date_of_creating = datetime.datetime.now()
+    m = None  # object manager
+
+    @staticmethod
+    def new(name='New Game created by new_game() function!!!', difficulty='normal'):
+        Game.is_pause = False
+        Game.name = name
+        Game.difficulty = difficulty
+        Game.date_of_creating = datetime.datetime.now()
+        Game.m = Manager()  # object manager
         print ('NEW GAME!!!')
 
-    def save(self):
-        f = open(config.SAVE_DIR + os.sep + 'savedgame', 'wb')
+        Game.x0 = game_object.Visible()
+        Game.x1 = game_object.Object()
+        Game.x2 = game_object.Visible()
+        Game.x3 = game_object.Object()
+        Game.x4 = game_object.Visible()
+        Game.x5 = game_object.Object()
+
+        print(Game.x0.id)
+        print(Game.x1.id)
+        print(Game.x2.id)
+        print(Game.x3.id)
+        print(Game.x4.id)
+        print(Game.x5.id)
+
+
+    @staticmethod
+    def save():
+        f = open(SAVES + os.sep + 'savedgame', 'wb')
         pickler = pickle.Pickler(f, 2)
-        pickler.dump(self.is_pause)
-        pickler.dump(self.name)
-        pickler.dump(self.difficulty)
-        pickler.dump(self.date_of_creating)
-        pickler.dump(self.objects)
+        pickler.dump(Game.is_pause)
+        pickler.dump(Game.name)
+        pickler.dump(Game.difficulty)
+        pickler.dump(Game.date_of_creating)
 
 
         f.close()
         del pickler
 
-    def load(self):
-        f = open(config.SAVE_DIR + os.sep + 'savedgame', 'rb')
+    @staticmethod
+    def load():
+        f = open(SAVES + os.sep + 'savedgame', 'rb')
         unpickler = pickle.Unpickler(f)
-        self.is_pause = unpickler.load()
-        self.name = unpickler.load()
-        self.difficulty = unpickler.load()
-        self.date_of_creating = unpickler.load()
-        self.objects = unpickler.load()
+        Game.is_pause = unpickler.load()
+        Game.name = unpickler.load()
+        Game.difficulty = unpickler.load()
+        Game.date_of_creating = unpickler.load()
 
         f.close()
         del unpickler
 
 
-
-
-
-
-
-    def update(self):
-        if self.is_pause:
-            self.r.set_pause(True)
+    @staticmethod
+    def update():
+        if Game.is_pause:
+            R.set_pause(True)
         else:
             pass
 
-    def show_info(self):
-        print (self.name)
-        print (self.difficulty)
-        print (self.date_of_creating)
-        print (self.objects)
+    @staticmethod
+    def show_info():
+        print (Game.name)
+        print (Game.difficulty)
+        print (Game.date_of_creating)
 
-
-    def switch_pause(self):
-        if self.is_pause:
-            self.is_pause = False
-            self.r.set_pause(False)
+    @staticmethod
+    def switch_pause():
+        if Game.is_pause:
+            Game.is_pause = False
+            R.set_pause(False)
         else:
-            self.is_pause = True
-            self.r.set_pause(True)
-
+            Game.is_pause = True
+            R.set_pause(True)
 
 
 class Manager(object):
@@ -83,5 +98,3 @@ class Manager(object):
     """
     def __init__(self):
         self.objects = []
-
-

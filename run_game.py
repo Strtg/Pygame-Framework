@@ -6,13 +6,13 @@ This module is the game starter. Run it for play the game.
 Pygame is initialized here. The main game objects are created (configurator, renderer, game etc.).
 The main loop is here.
 """
-import pygame
-pygame.init()
+from __future__ import print_function
 from config import Config as C
 from render import Render as R
+from game import Game as G
+from eventer import Eventer as E
 
 
-# import configurator, renderer, game, eventer, game_object
 
 
 C.setup()
@@ -21,19 +21,9 @@ C.save_config()
 
 R.setup()
 R.load_resources()
+G.new()
 
-# r = renderer.Renderer(c)
-# g = game.Game(r, c)
-# g.name = 'crap game'
-# g.difficulty = 'really crap game!!!'
-
-
-
-
-# e = eventer.Eventer(c, g, r)
-#
-#
-# while True:
-#     e.handle()
-#     g.update()
-#     r.render()
+while True:
+    E.handle()
+    G.update()
+    R.render()

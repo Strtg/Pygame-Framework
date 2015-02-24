@@ -1,64 +1,63 @@
 import pygame
 from config import Config as C
+from config import GAME_NAME
 
 class Render(object):
     pause_fps = 5
-    normal_fps = 10
-    used_fps = normal_fps
+    used_fps = 5
     flags = 0
-    fullscreen = 0
     image = None
     rect = None
+    fpsclock = None
+
     images = []  # container for images
     sounds = []
-    fpsclock = None
     sprite_container = None
 
     @staticmethod
     def setup():
-        Render.used_fps = C.config_dict['maxfps']
-        Render.pause_fps = 5
-        Render.images = []  # container for images
-        Render.sprite_container = pygame.sprite.LayeredDirty()
-        normal_fps = c.configs['maxfps']
-        fpsclock = FpsClock()
-        fullscreen = c.configs['fullscreen']
-        if fullscreen:
-            flags = flags | pygame.FULLSCREEN
-        pygame.display.set_mode((c.configs['resolution']), flags)
-        for img in images:
-            C.loaded_images[img].image.convert()
-        pygame.display.set_caption(config.GAME_NAME)
+        pygame.init()
 
-        image = pygame.display.get_surface()
-        rect = image.get_rect()
-        images = load_images()
+        Render.pause_fps = 5
+        Render.used_fps = C.config_dict['maxfps']
+
+        if C.config_dict['fullscreen']:
+            pygame.display.set_mode(C.config_dict['resolution'], pygame.FULLSCREEN)
+        else:
+            pygame.display.set_mode(C.config_dict['resolution'])
+        pygame.display.set_caption(GAME_NAME)
+        Render.image = pygame.display.get_surface()
+        Render.rect = Render.image.get_rect()
+        Render.fpsclock = FpsClock()
+
 
     @staticmethod
     def load_resources():
-        pass
+        Render.images = Render.load_images()
+        Render.sprite_container = pygame.sprite.LayeredDirty()
+        for img in Render.images:
+            C.loaded_images[img].image.convert()
 
-
-
-    def load_images(self):
+    @staticmethod
+    def load_images():
         return []
 
-
-    def set_pause(self, bool):
+    @staticmethod
+    def set_pause(bool):
         if bool:
-            self.used_fps = self.pause_fps
+            Render.used_fps = Render.pause_fps
         else:
-            self.used_fps = self.normal_fps
+            Render.used_fps = C.config_dict['maxfps']
 
-    def render(self):
-        self.sprite_container.update()
+    @staticmethod
+    def render():
+        Render.sprite_container.update()
 
-        # self.image.fill((90,0,0))
-        self.sprite_container.draw(self.image)
-        self.fpsclock.update(self.used_fps)
-        self.image.blit(self.fpsclock.image,(0,0))
+        Render.image.fill((160,160,160))
+        Render.sprite_container.draw(Render.image)
+        Render.fpsclock.update(Render.used_fps)
+        Render.image.blit(Render.fpsclock.image,(0,0))
         pygame.display.flip()
-
 
 
 class FpsClock(pygame.sprite.DirtySprite):
@@ -74,3 +73,11 @@ class FpsClock(pygame.sprite.DirtySprite):
         self.clock.tick(fps)
 
 
+class SpriteManager(pygame.sprite.LayeredDirty):
+    def __init__(self):
+        super(SpriteManager, self).__init__()
+
+
+class Sprite(pygame.sprite.DirtySprite):
+    def __init__(self, obj):
+        super(Sprite, self).__init__()
