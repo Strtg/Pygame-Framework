@@ -1,10 +1,11 @@
 from __future__ import print_function
-
 import pygame, sys
 from pygame.locals import *
 from config import Config as C
 from render import Render as R
 from game import Game as G
+from debugator import debugator
+
 
 
 class Eventer(object):
@@ -12,6 +13,7 @@ class Eventer(object):
     commands = []
     
     @staticmethod
+    # @debugator
     def handle():
         Eventer.commands = []
         for event in pygame.event.get():

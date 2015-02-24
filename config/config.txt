@@ -1,4 +1,4 @@
-maxfps: 7000
+maxfps: 6000
 resolution: 1366, 768
 fullscreen: 0
 debug: 0

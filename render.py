@@ -1,6 +1,8 @@
+from __future__ import print_function
 import pygame
 from config import Config as C
 from config import GAME_NAME
+from debugator import debugator
 
 class Render(object):
     pause_fps = 5
@@ -15,6 +17,7 @@ class Render(object):
     sprite_container = None
 
     @staticmethod
+    @debugator
     def setup():
         pygame.init()
 
@@ -32,6 +35,7 @@ class Render(object):
 
 
     @staticmethod
+    @debugator
     def load_resources():
         Render.images = Render.load_images()
         Render.sprite_container = pygame.sprite.LayeredDirty()
@@ -39,10 +43,12 @@ class Render(object):
             C.loaded_images[img].image.convert()
 
     @staticmethod
+    @debugator
     def load_images():
         return []
 
     @staticmethod
+    @debugator
     def set_pause(bool):
         if bool:
             Render.used_fps = Render.pause_fps
@@ -50,6 +56,7 @@ class Render(object):
             Render.used_fps = C.config_dict['maxfps']
 
     @staticmethod
+    # @debugator
     def render():
         Render.sprite_container.update()
 

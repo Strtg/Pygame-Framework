@@ -1,8 +1,10 @@
 import layers as l
+from debugator import debugator
 
 
 class OManager(object):  # object manager
 
+    @debugator
     def __init__(self):
         self.objects = {}
 
@@ -13,13 +15,11 @@ class OManager(object):  # object manager
 
 
 
-
-
-
 class Object(object):
 
     _next_id = 0
 
+    @debugator
     def __init__(self):
         self._id = Object._next_id
         Object._next_id += 1
@@ -31,6 +31,7 @@ class Object(object):
 
 class Visible(Object):
 
+    @debugator
     def __init__(self, l=l.background, app='imageholder' ):
         super(Visible, self).__init__()
         self.layer = l
@@ -39,6 +40,7 @@ class Visible(Object):
 
 class Clickable(Visible):
 
+    @debugator
     def __init__(self, on_click):
         super(Clickable, self).__init__()
         self.on_click = on_click

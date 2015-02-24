@@ -3,7 +3,7 @@
 """
 This module is the game starter. Run it for play the game.
 
-Pygame is initialized here. The main game objects are created (configurator, renderer, game etc.).
+The program is initialized here.
 The main loop is here.
 """
 from __future__ import print_function
@@ -11,8 +11,6 @@ from config import Config as C
 from render import Render as R
 from game import Game as G
 from eventer import Eventer as E
-
-
 
 
 C.setup()

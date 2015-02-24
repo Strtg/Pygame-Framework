@@ -1,5 +1,4 @@
 from __future__ import print_function
-import pygame
 import pickle
 
 from config import SAVES
@@ -9,6 +8,7 @@ import os
 import datetime
 import game_object
 import layers
+from debugator import debugator
 
 
 
@@ -20,6 +20,7 @@ class Game(object):
     m = None  # object manager
 
     @staticmethod
+    @debugator
     def new(name='New Game created by new_game() function!!!', difficulty='normal'):
         Game.is_pause = False
         Game.name = name
@@ -44,6 +45,7 @@ class Game(object):
 
 
     @staticmethod
+    @debugator
     def save():
         f = open(SAVES + os.sep + 'savedgame', 'wb')
         pickler = pickle.Pickler(f, 2)
@@ -57,6 +59,7 @@ class Game(object):
         del pickler
 
     @staticmethod
+    @debugator
     def load():
         f = open(SAVES + os.sep + 'savedgame', 'rb')
         unpickler = pickle.Unpickler(f)
@@ -70,19 +73,22 @@ class Game(object):
 
 
     @staticmethod
+    # @debugator
     def update():
         if Game.is_pause:
-            R.set_pause(True)
+            pass
         else:
             pass
 
     @staticmethod
+    @debugator
     def show_info():
         print (Game.name)
         print (Game.difficulty)
         print (Game.date_of_creating)
 
     @staticmethod
+    @debugator
     def switch_pause():
         if Game.is_pause:
             Game.is_pause = False
@@ -96,5 +102,6 @@ class Manager(object):
     """
     Object manager.
     """
+    @debugator
     def __init__(self):
         self.objects = []
