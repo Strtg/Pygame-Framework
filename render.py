@@ -3,6 +3,7 @@ import pygame
 from config import Config as C
 from config import GAME_NAME
 from debugator import debugator
+import os
 
 class Render(object):
     pause_fps = 5
@@ -12,8 +13,8 @@ class Render(object):
     rect = None
     fpsclock = None
 
-    images = []  # container for images
-    sounds = []
+    image_paths = {}  # name without ext is key, full path is value
+    sound_paths = {}
     sprite_container = None
 
     @staticmethod
@@ -37,15 +38,27 @@ class Render(object):
     @staticmethod
     @debugator
     def load_resources():
-        Render.images = Render.load_images()
+        Render.image_paths = Render.do_resource_paths_dict('.png')
+        Render.sound_paths = Render.do_resource_paths_dict('.ogg')
+
         Render.sprite_container = pygame.sprite.LayeredDirty()
-        for img in Render.images:
-            C.loaded_images[img].image.convert()
+
 
     @staticmethod
     @debugator
-    def load_images():
-        return []
+    def do_resource_paths_dict(ext):
+        images = {}
+        for path in C.mods_paths:
+            for item in os.listdir(path):
+                if os.path.isfile(path + os.sep + item):
+                    if item.lower().endswith(ext):
+                        images.update({item.rsplit(ext,1)[0]: path+'/'+item})
+                        print(path+'/'+item, 'loaded.')
+                        print(item.rsplit(ext,1)[0])
+
+        for n, p in images.items():
+            print(n, '\t', p)
+        return images
 
     @staticmethod
     @debugator

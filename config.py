@@ -236,6 +236,7 @@ def upgrade_list_from_dict(list, dict):  # returns None
 @debugator
 def do_mods(_):  # returns list of paths
     mods = []
+    mods.append({'name': VANILLA, 'dir': 'all'})  # sneaky vanilla game adding
     for line in _:
         if 'key' in line:
             mods.append({'name': line['key'], 'dir': line['value']})
