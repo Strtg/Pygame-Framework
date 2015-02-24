@@ -2,6 +2,7 @@ from __future__ import print_function
 import pickle
 
 from config import SAVES
+import config
 from config import Config as C
 from render import Render as R
 import os
@@ -14,10 +15,8 @@ import time
 
 class Game(object):
     is_pause = False
-    name = None
-    difficulty = None
-    date_of_creating = datetime.datetime.now()
-    m = None  # object manager
+
+    playing = None  #
 
     @staticmethod
     @debugator
@@ -26,35 +25,16 @@ class Game(object):
         Game.name = name
         Game.difficulty = difficulty
         Game.date_of_creating = datetime.datetime.now()
-        Game.m = Manager()  # object manager
+
+        Game.playing = Playing()  # object manager and game instance to save/load
         print ('NEW GAME!!!')
-
-        Game.x0 = game_object.Visible()
-        Game.x1 = game_object.Object()
-        Game.x2 = game_object.Visible()
-        Game.x3 = game_object.Object()
-        Game.x4 = game_object.Visible()
-        Game.x5 = game_object.Object()
-
-        print(Game.x0.id)
-        print(Game.x1.id)
-        print(Game.x2.id)
-        print(Game.x3.id)
-        print(Game.x4.id)
-        print(Game.x5.id)
-
 
     @staticmethod
     @debugator
     def save():
-        f = open(SAVES + os.sep + 'savedgame', 'wb')
+        f = open(SAVES + os.sep + 'savedgame' + config.SAVE_EXT, 'wb')
         pickler = pickle.Pickler(f, 2)
-        pickler.dump(Game.is_pause)
-        pickler.dump(Game.name)
-        pickler.dump(Game.difficulty)
-        pickler.dump(Game.date_of_creating)
-
-
+        pickler.dump(Game.playing)
         f.close()
         del pickler
 
@@ -63,11 +43,7 @@ class Game(object):
     def load():
         f = open(SAVES + os.sep + 'savedgame', 'rb')
         unpickler = pickle.Unpickler(f)
-        Game.is_pause = unpickler.load()
-        Game.name = unpickler.load()
-        Game.difficulty = unpickler.load()
-        Game.date_of_creating = unpickler.load()
-
+        Game.playing = unpickler.load()
         f.close()
         del unpickler
 
@@ -83,9 +59,9 @@ class Game(object):
     @staticmethod
     @debugator
     def show_info():
-        print (Game.name)
-        print (Game.difficulty)
-        print (Game.date_of_creating)
+        print (Game.playing.name)
+        print (Game.playing.difficulty)
+        print (Game.playing.date_of_creating)
 
     @staticmethod
     @debugator
@@ -98,10 +74,16 @@ class Game(object):
             R.set_pause(True)
 
 
-class Manager(object):
-    """
-    Object manager.
-    """
+class Playing(object):  # object manager
+
     @debugator
     def __init__(self):
-        self.objects = []
+        self.objects = {}
+        self.name = None
+        self.difficulty = None
+        self.date_of_creating = datetime.datetime.now()
+
+    def create_object(self, obj):
+        self.objects.update({obj.id: obj})
+        R.s
+

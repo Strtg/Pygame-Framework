@@ -41,7 +41,7 @@ class Render(object):
         Render.image_paths = Render.do_resource_paths_dict('.png')
         Render.sound_paths = Render.do_resource_paths_dict('.ogg')
 
-        Render.sprite_container = pygame.sprite.LayeredDirty()
+        Render.sprite_container = SpriteManager()
 
 
     @staticmethod
@@ -96,6 +96,9 @@ class FpsClock(pygame.sprite.DirtySprite):
 class SpriteManager(pygame.sprite.LayeredDirty):
     def __init__(self):
         super(SpriteManager, self).__init__()
+
+    def register_new(self, id):
+        pass
 
 
 class Sprite(pygame.sprite.DirtySprite):

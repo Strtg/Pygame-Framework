@@ -2,15 +2,6 @@ import layers as l
 from debugator import debugator
 
 
-class OManager(object):  # object manager
-
-    @debugator
-    def __init__(self):
-        self.objects = {}
-
-    def create(self, obj):
-        self.objects.update({obj.id: obj})
-
 
 
 
