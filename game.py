@@ -9,7 +9,7 @@ import datetime
 import game_object
 import layers
 from debugator import debugator
-
+import time
 
 
 class Game(object):
@@ -78,7 +78,7 @@ class Game(object):
         if Game.is_pause:
             pass
         else:
-            pass
+            print('UPDATE {0:11.22f}'.format(time.time()))
 
     @staticmethod
     @debugator

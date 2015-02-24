@@ -72,8 +72,9 @@ BASIC_DIR_TREE = (
 
 # default hardcoded configuration files
 DEFAULT_CONFIG_FILE = [
-    {'key': 'maxfps', 'value': '100'},
-    {'key': 'resolution', 'value': '400, 400'},
+    {'key': 'maxfps', 'value': '60'},
+    {'key': 'resolution', 'value': '400, 300'},
+    {'key': 'game_logic_speed', 'value': '0.01'},
     {'key': 'fullscreen', 'value': '0'},
     {'key': 'debug', 'value': '0'}
 ]
@@ -86,6 +87,7 @@ DEFAULT_KEYS_FILE = [
     {'key': 'K_s', 'value': 'save'},
     {'key': 'K_l', 'value': 'load'},
     {'key': 'K_i', 'value': 'show_info'},
+    {'key': 'K_f', 'value': 'switch_fullscreen'},
     {'key': 'K_F5', 'value': 'reload_resources'}
 ]
 
@@ -204,6 +206,9 @@ def do_dict_from_list(list):  # returns dictionary
             dictionary[key] = int(dictionary[key])
         elif ',' in dictionary[key]:
             dictionary[key] = map(int, dictionary[key].split(','))
+        elif '.' in dictionary[key]:
+            dictionary[key] = float(dictionary[key])
+
     return dictionary
 
 @debugator
