@@ -42,7 +42,9 @@ DIR_NAMES = {
 
 # Basic file paths
 CONFIG_FILE = CONFIG + sep + 'config.txt'  # the name of file for configuration data (game options)
-KEYS_FILE = CONFIG + sep + 'keys.txt'  # The name of file for
+KEYS_DOWN_FILE = CONFIG + sep + 'keys_down.txt'  # The name of file for
+KEYS_UP_FILE = CONFIG + sep + 'keys_up.txt'  # The name of file for
+
 MODS_FILE = MODS + sep + 'active_mods.txt'
 
 # special characters in config files
@@ -79,7 +81,7 @@ DEFAULT_CONFIG_FILE = [
     {'key': 'debug', 'value': '0'}
 ]
 
-DEFAULT_KEYS_FILE = [
+DEFAULT_KEYS_DOWN_FILE = [
     {'key': 'K_ESCAPE', 'value': 'main_menu'},
     {'key': 'K_p', 'value': 'pause'},
     {'key': 'QUIT', 'value': 'quit'},
@@ -89,6 +91,13 @@ DEFAULT_KEYS_FILE = [
     {'key': 'K_i', 'value': 'show_info'},
     {'key': 'K_f', 'value': 'switch_fullscreen'},
     {'key': 'K_F5', 'value': 'reload_resources'}
+]
+
+DEFAULT_KEYS_UP_FILE = [
+    {'key': 'K_LEFT', 'value': 'camera_stop'},
+    {'key': 'K_RIGHT', 'value': 'camera_stop'},
+    {'key': 'K_UP', 'value': 'camera_stop'},
+    {'key': 'K_DOWN', 'value': 'camera_stop'}
 ]
 
 DEFAULT_MODS_FILE = [
@@ -272,11 +281,14 @@ class Config(object):
     in my functions so it is a class.
     """
     config_list = []  # list of dictionaries {'key':'string', 'value':'string', 'comment':'string'}
-    keys_list = []
+    keys_down_list = []
+    keys_up_list = []
+
     mods_list = []
 
     config_dict = {}  # clean config_from_file (no comments, just keys and values), flat dictionary
-    keys_dict = {}
+    keys_down_dict = {}
+    keys_up_dict = {}
     mods_paths = ['kurwa']  # list of dictionaries (name, fullpath)
 
 
@@ -291,9 +303,12 @@ class Config(object):
         if check_if_file_exists(CONFIG_FILE) == False:
             create_file(CONFIG_FILE)
             do_file_from_list(CONFIG_FILE, DEFAULT_CONFIG_FILE)
-        if check_if_file_exists(KEYS_FILE) == False:
-            create_file(KEYS_FILE)
-            do_file_from_list(KEYS_FILE, DEFAULT_KEYS_FILE)
+        if check_if_file_exists(KEYS_DOWN_FILE) == False:
+            create_file(KEYS_DOWN_FILE)
+            do_file_from_list(KEYS_DOWN_FILE, DEFAULT_KEYS_DOWN_FILE)
+        if check_if_file_exists(KEYS_UP_FILE) == False:
+            create_file(KEYS_UP_FILE)
+            do_file_from_list(KEYS_UP_FILE, DEFAULT_KEYS_UP_FILE)
         if check_if_file_exists(MODS_FILE) == False:
             create_file(MODS_FILE)
             do_file_from_list(MODS_FILE, DEFAULT_MODS_FILE)
@@ -303,19 +318,24 @@ class Config(object):
     @debugator
     def load_config():
         Config.config_list = do_list_from_file(CONFIG_FILE)
-        Config.keys_list = do_list_from_file(KEYS_FILE)
+        Config.keys_down_list = do_list_from_file(KEYS_DOWN_FILE)
+        Config.keys_up_list = do_list_from_file(KEYS_UP_FILE)
         Config.mods_list = do_list_from_file(MODS_FILE)
         Config.config_dict = do_dict_from_list(Config.config_list)
-        Config.keys_dict = do_dict_from_list(Config.keys_list)
+        Config.keys_down_dict = do_dict_from_list(Config.keys_down_list)
+        Config.keys_up_dict = do_dict_from_list(Config.keys_up_list)
         Config.mods_paths = do_mods(Config.mods_list)
 
 
     @staticmethod
     def save_config():
         upgrade_list_from_dict(Config.config_list, Config.config_dict)
-        upgrade_list_from_dict(Config.keys_list, Config.keys_dict)
+        upgrade_list_from_dict(Config.keys_down_list, Config.keys_down_dict)
+        upgrade_list_from_dict(Config.keys_up_list, Config.keys_up_dict)
         do_file_from_list(CONFIG_FILE, Config.config_list)
-        do_file_from_list(KEYS_FILE, Config.keys_list)
+        do_file_from_list(KEYS_DOWN_FILE, Config.keys_down_list)
+        do_file_from_list(KEYS_UP_FILE, Config.keys_up_list)
+
 
 
     @staticmethod

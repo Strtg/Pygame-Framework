@@ -1,0 +1,4 @@
+K_LEFT: camera_stop_left
+K_RIGHT: camera_stop_right
+K_UP: camera_stop_up
+K_DOWN: camera_stop_down

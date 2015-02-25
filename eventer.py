@@ -19,13 +19,18 @@ class Eventer(object):
         Eventer.commands = []
         for event in pygame.event.get():
             if event.type == KEYDOWN:
-                for inpt in C.keys_dict:
+                for inpt in C.keys_down_dict:
                     if eval(inpt) == event.key:
-                        Eventer.commands.append(C.keys_dict[inpt])
+                        Eventer.commands.append(C.keys_down_dict[inpt])
+            elif event.type == KEYUP:
+                for inpt in C.keys_up_dict:
+                    if eval(inpt) == event.key:
+                        Eventer.commands.append(C.keys_up_dict[inpt])
+
             else:
-                for inpt in C.keys_dict:
+                for inpt in C.keys_down_dict:
                     if eval(inpt) == event.type:
-                        Eventer.commands.append(C.keys_dict[inpt])
+                        Eventer.commands.append(C.keys_down_dict[inpt])
             if Eventer.commands:
                 print ('The last element of the command list:', Eventer.commands[-1] + '.')
 
@@ -55,10 +60,18 @@ class Eventer(object):
                     C.config_dict['fullscreen'] = 1
                 R.setup()
             elif command == 'camera_left':
-                render.Camera.move((10, 0))
+                render.Camera.move((2, 0))
             elif command == 'camera_right':
-                render.Camera.move((-10, 0))
+                render.Camera.move((-2, 0))
             elif command == 'camera_up':
-                render.Camera.move((0, 10))
+                render.Camera.move((0, 2))
             elif command == 'camera_down':
-                render.Camera.move((0, -10))
+                render.Camera.move((0, -2))
+            elif command == 'camera_stop_left':
+                render.Camera.stop_left()
+            elif command == 'camera_stop_right':
+                render.Camera.stop_right()
+            elif command == 'camera_stop_up':
+                render.Camera.stop_up()
+            elif command == 'camera_stop_down':
+                render.Camera.stop_down()
