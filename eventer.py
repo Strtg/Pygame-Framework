@@ -3,6 +3,7 @@ import pygame, sys
 from pygame.locals import *
 from config import Config as C
 import render
+import game
 from render import Render as R
 from game import Game as G
 from debugator import debugator
@@ -60,18 +61,18 @@ class Eventer(object):
                     C.config_dict['fullscreen'] = 1
                 R.setup()
             elif command == 'camera_left':
-                render.Camera.move((2, 0))
+                game.Camera.is_moving_left = 1
             elif command == 'camera_right':
-                render.Camera.move((-2, 0))
+                game.Camera.is_moving_right = 1
             elif command == 'camera_up':
-                render.Camera.move((0, 2))
+                game.Camera.is_moving_up = 1
             elif command == 'camera_down':
-                render.Camera.move((0, -2))
+                game.Camera.is_moving_down = 1
             elif command == 'camera_stop_left':
-                render.Camera.stop_left()
+                game.Camera.is_moving_left = 0
             elif command == 'camera_stop_right':
-                render.Camera.stop_right()
+                game.Camera.is_moving_right = 0
             elif command == 'camera_stop_up':
-                render.Camera.stop_up()
+                game.Camera.is_moving_up = 0
             elif command == 'camera_stop_down':
-                render.Camera.stop_down()
+                game.Camera.is_moving_down = 0
