@@ -55,10 +55,10 @@ class Eventer(object):
                     C.config_dict['fullscreen'] = 1
                 R.setup()
             elif command == 'camera_left':
-                render.Camera.move((-10, 0))
-            elif command == 'camera_right':
                 render.Camera.move((10, 0))
+            elif command == 'camera_right':
+                render.Camera.move((-10, 0))
             elif command == 'camera_up':
-                render.Camera.move((0, -10))
-            elif command == 'camera_down':
                 render.Camera.move((0, 10))
+            elif command == 'camera_down':
+                render.Camera.move((0, -10))
