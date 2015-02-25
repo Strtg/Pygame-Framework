@@ -1,4 +1,4 @@
-maxfps: 1000
+maxfps: 30
 game_logic_speed: 2
 resolution: 1366, 768
 fullscreen: 0

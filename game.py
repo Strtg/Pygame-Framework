@@ -45,7 +45,7 @@ class Game(object):
     @staticmethod
     @debugator
     def load():
-        f = open(SAVES + os.sep + 'savedgame', 'rb')
+        f = open(SAVES + os.sep + 'savedgame' + config.SAVE_EXT, 'rb')
         unpickler = pickle.Unpickler(f)
         Game.playing = unpickler.load()
         f.close()
