@@ -7,3 +7,7 @@ K_l: load
 K_i: show_info
 K_f: switch_fullscreen
 K_F5: reload_resources
+K_LEFT: camera_left
+K_RIGHT: camera_right
+K_UP: camera_up
+K_DOWN: camera_down

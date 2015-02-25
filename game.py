@@ -25,9 +25,12 @@ class Game(object):
         Game.name = name
         Game.difficulty = difficulty
         Game.date_of_creating = datetime.datetime.now()
+        Game.playing = Stage()  # object manager and game instance to save/load
+        Game.current_stage = Game.playing
+        Game.playing.create_object(game_object.Visible(l=90.100001, app='button01'))
+        Game.playing.create_object(game_object.Visible(l=90.1, app='bubbles'))
 
-        Game.playing = Playing()  # object manager and game instance to save/load
-        Game.playing.create_object(game_object.Visible(l=90, app='button01'))
+
         print ('NEW GAME!!!')
 
     @staticmethod
@@ -75,7 +78,7 @@ class Game(object):
             R.set_pause(True)
 
 
-class Playing(object):  # object manager
+class Stage(object):  # object manager
 
     @debugator
     def __init__(self):
@@ -83,7 +86,6 @@ class Playing(object):  # object manager
         self.name = None
         self.difficulty = None
         self.date_of_creating = datetime.datetime.now()
-
     def create_object(self, obj):
         self.objects.update({obj.id: obj})
         R.sprite_container.register(self, obj.id)
@@ -94,4 +96,5 @@ class Playing(object):  # object manager
         data.update({'appearance': self.objects[id].appearance})
         data.update({'layer': self.objects[id].layer})
         return data
+
 

@@ -99,7 +99,19 @@ class SpriteManager(pygame.sprite.LayeredDirty):
         data = pl.give_me_data(id)
         self.add(Sprite(data['id'], data['appearance'], data['layer']))
 
+    def update(self):
+        super(SpriteManager, self).update()
+        Camera.pos = (0, 0)
 
+
+class Camera(object):
+
+    pos = (0, 0)
+
+    @staticmethod
+    @debugator
+    def move(move):
+        Camera.pos = (Camera.pos[0] + move[0], Camera.pos[1] + move[1])
 
 
 class Sprite(pygame.sprite.DirtySprite):
@@ -112,4 +124,8 @@ class Sprite(pygame.sprite.DirtySprite):
         # self.rect.center = Render.rect.center
 
     def update(self):
+
         self.dirty = 1
+        for group in self.groups():
+            group.change_layer(self, self.layer)
+        self.rect.move_ip(Camera.pos)
