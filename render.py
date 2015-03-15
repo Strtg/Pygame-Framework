@@ -1,82 +1,86 @@
 from __future__ import print_function
 import pygame
-from config import Config as C
-from config import GAME_NAME
-from debugator import debugator
 import os
 
-class Render(object):
-    pause_fps = 5
-    used_fps = 5
-    flags = 0
-    image = None
-    rect = None
-    fpsclock = None
+import config  # for configurations (resolutions, fullscreen and mod paths for image load
+import const  # for game name in window caption
 
-    image_paths = {}  # name without ext is key, full path is value
-    sound_paths = {}
-    sprite_container = None
-
-    @staticmethod
-    @debugator
-    def setup():
-        pygame.init()
-
-        Render.pause_fps = 5
-        Render.used_fps = C.config_dict['maxfps']
-
-        if C.config_dict['fullscreen']:
-            pygame.display.set_mode(C.config_dict['resolution'], pygame.FULLSCREEN)
-        else:
-            pygame.display.set_mode(C.config_dict['resolution'])
-        pygame.display.set_caption(GAME_NAME)
-        Render.image = pygame.display.get_surface()
-        Render.rect = Render.image.get_rect()
-        Render.fpsclock = FpsClock()
+pause_fps = 0  # fps when pause
+used_fps = 0  # current fps
+screen = None  # display screen surface
+rect = None  # display screen surface rect
+fpsclock = None  # fps displayer and counter
+image_paths = {}  # name without ext is key, full path is value
+sound_paths = {}  # same as image_paths but for sound
+images = {}  # loaded images
+sprite_container = None  # group for all sprites
 
 
-    @staticmethod
-    @debugator
-    def load_resources():
-        Render.image_paths = Render.do_resource_paths_dict('.png')
-        Render.sound_paths = Render.do_resource_paths_dict('.ogg')
+def setup():  # initialize all global variables
+    pygame.init()
+    global pause_fps, used_fps, screen, image_paths, rect, fpsclock, sprite_container
+    pause_fps = config.config_dict['pause_fps']
+    used_fps = config.config_dict['maxfps']
 
-        Render.sprite_container = SpriteManager()
+    if config.config_dict['fullscreen']:
+        pygame.display.set_mode(config.config_dict['resolution'], pygame.FULLSCREEN)
+    else:
+        pygame.display.set_mode(config.config_dict['resolution'])
+    pygame.display.set_caption(const.GAME_NAME)
+    screen = pygame.display.get_surface()
+    rect = screen.get_rect()
+    fpsclock = FpsClock()
+    sprite_container = SpriteManager()
 
 
-    @staticmethod
-    @debugator
-    def do_resource_paths_dict(ext):
-        images = {}
-        for path in C.mods_paths:
-            for item in os.listdir(path):
-                if os.path.isfile(path + os.sep + item):
-                    if item.lower().endswith(ext):
-                        images.update({item.rsplit(ext,1)[0]: path+'/'+item})
-                        print(path+'/'+item, 'loaded.')
-                        print(item.rsplit(ext,1)[0])
+def load_resources():
+    global image_paths, sound_paths, images
+    image_paths = do_resource_paths_dict('.png')
+    sound_paths = do_resource_paths_dict('.ogg')
+    images = load_images(image_paths)
 
-        for n, p in images.items():
-            print(n, '\t', p)
-        return images
+def load_images(dict):
+    images = {}
+    for name, path in dict.items():
+        images.update({name: pygame.image.load(path).convert()})
+    return images
 
-    @staticmethod
-    @debugator
-    def set_pause(bool):
-        if bool:
-            Render.used_fps = Render.pause_fps
-        else:
-            Render.used_fps = C.config_dict['maxfps']
+def do_resource_paths_dict(ext):
+    images = {}
+    for path in config.mods_paths:
+        for item in os.listdir(path):
+            if os.path.isfile(path + os.sep + item):
+                if item.lower().endswith(ext):
+                    images.update({item.rsplit(ext,1)[0]: path+'/'+item})
+                    print(path+'/'+item, 'loaded.')
+                    print(item.rsplit(ext,1)[0])
 
-    @staticmethod
-    # @debugator
-    def render():
-        Render.image.fill((240,240,240))
-        Render.sprite_container.update()
-        Render.sprite_container.draw(Render.image)
-        Render.fpsclock.update(Render.used_fps)
-        Render.image.blit(Render.fpsclock.image,(0,0))
-        pygame.display.flip()
+    for n, p in images.items():
+        print(n, '\t', p)
+    return images
+
+def set_pause(bool):
+    global  used_fps
+    if bool:
+        used_fps = pause_fps
+    else:
+        used_fps = config.config_dict['maxfps']
+
+def render():
+    global screen
+    screen.fill((240,240,240))
+    # Render.sprite_container.update()
+    # Render.sprite_container.draw(Render.image)
+    for id, name in metagame.MetaGame.game.images.items():
+        # if metagame.MetaGame.game.positions[id].x <= Render.rect.width:
+        #     if metagame.MetaGame.game.positions[id].y <= Render.rect.height:
+                screen.blit(Render.images[name.name], (
+                metagame.MetaGame.game.positions[id].x, metagame.MetaGame.game.positions[id].y))
+
+
+    fpsclock.update(used_fps)
+    screen.blit(fpsclock.image,(0,0))
+    pygame.display.flip()
 
 
 class FpsClock(pygame.sprite.DirtySprite):
@@ -95,33 +99,32 @@ class SpriteManager(pygame.sprite.LayeredDirty):
     def __init__(self):
         super(SpriteManager, self).__init__()
 
-    def register(self, pl, id):
-        data = pl.give_me_data(id)
-        self.add(Sprite(data['id'], data['appearance'], data['layer']))
+    def register(self, image):
+        self.add(Sprite(image))
+
 
     def update(self):
         super(SpriteManager, self).update()
 
 
-class Camera(object):
-    pos = [0, 0]
+
 
 
 class Sprite(pygame.sprite.DirtySprite):
-    def __init__(self, id, img, layer):
+    def __init__(self, image):
         super(Sprite, self).__init__()
-        self.pos = (100, 100)
-        self.id = id
-        self.layer = layer
-        self.image = pygame.image.load(Render.image_paths[img]).convert_alpha()
-        self.rect = self.image.get_rect()
-        self.rect.move_ip(self.pos)
-        # self.rect.center = Render.rect.center
+        self.pos = (image._pos.xy)
+        self.plane = image.plane
 
     def update(self):
 
         self.dirty = 1
         for group in self.groups():
             group.change_layer(self, self.layer)
-        self.rect.x = self.pos[0]+Camera.pos[0]
-        self.rect.y = self.pos[1]+Camera.pos[1]
+        if self.scroll:
+            self.rect.x = self.pos[0]+self.plane.camera.pos[0]
+            self.rect.y = self.pos[1]+self.plane.camera.pos[1]
+
+
+if __name__ == '__main__':
+    print(do_resource_paths_dict('.png'))

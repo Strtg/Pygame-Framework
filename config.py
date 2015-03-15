@@ -1,155 +1,28 @@
 from __future__ import print_function
 import os
-from debugator import debugator
+
+import utils
+import const
+
+
 """
 The module for contains and for setup/configuration functions.
 
 This module contain file names, directory names and game name.
 """
 
+config_list = []  # list of dictionaries {'key':'string', 'value':'string', 'comment':'string'}
+keys_down_list = []
+keys_up_list = []
+mods_list = []
+config_dict = {}  # clean config_from_file (no comments, just keys and values), flat dictionary
+keys_down_dict = {}
+keys_up_dict = {}
+mods_paths = []  # list of dictionaries (name, fullpath)
 
-#############################################
-# THOSE ARE CONSTANTS AND WILL NEVER CHANGE #
-# UNLESS YOU WANT TO CHANGE THE GAME CODE   #
-# SO THEY ARE GLOBAL                        #
-#############################################
 
-# game name - printed on the title bar of the program
-GAME_NAME = 'Game Pattern (refactoring branch)'
 
-# save files extensions
-SAVE_EXT = '.savgam'
 
-# Pathname separator
-sep = os.sep
-
-# Directory names.
-MODS = 'mods'
-VANILLA = 'vanilla'
-IN = 'backend'
-OUT = 'frontend'
-GFX = 'gfx'
-SND = 'snd'
-CONFIG = 'config'
-SAVES = 'saves'
-
-DIR_NAMES = {
-    'backend': 'IN',
-    'frontend': 'OUT',
-    'gfx': 'GFX',
-    'snd': 'SND'
-}
-
-# Basic file paths
-CONFIG_FILE = CONFIG + sep + 'config.txt'  # the name of file for configuration data (game options)
-KEYS_DOWN_FILE = CONFIG + sep + 'keys_down.txt'  # The name of file for
-KEYS_UP_FILE = CONFIG + sep + 'keys_up.txt'  # The name of file for
-
-MODS_FILE = MODS + sep + 'active_mods.txt'
-
-# special characters in config files
-CONFIG_SEPS = (':', '#')  # (name-value separator, comment)
-
-# directory structure
-SUB_DIR_TREE = {
-    'IN': IN,
-    'OUT': OUT,
-    'GFX': OUT + sep + GFX,
-    'SND': OUT + sep + SND
-}
-
-BASIC_DIR_TREE = (
-    CONFIG,  # the directory for configuration files
-    SAVES,  # the directory for saved game files
-    MODS,  # mods_paths dir
-    MODS + sep + VANILLA,  # path to the directory for unmodified game
-    MODS + sep + VANILLA + sep + SUB_DIR_TREE['IN'],
-    # path to the directory for back-end game data like monster or item statistics
-    # that can be modded but required a new game to work
-    MODS + sep + VANILLA + sep + SUB_DIR_TREE['OUT'],
-    # the directory for front-end game data like graphics and sounds that can be safely modify
-    MODS + sep + VANILLA + sep + SUB_DIR_TREE['GFX'],  # the directory for images
-    MODS + sep + VANILLA + sep + SUB_DIR_TREE['SND']  # the directory for sound
-)
-
-# default hardcoded configuration files
-DEFAULT_CONFIG_FILE = [
-    {'key': 'maxfps', 'value': '60'},
-    {'key': 'resolution', 'value': '400, 300'},
-    {'key': 'game_logic_speed', 'value': '0.01'},
-    {'key': 'fullscreen', 'value': '0'},
-    {'key': 'debug', 'value': '0'}
-]
-
-DEFAULT_KEYS_DOWN_FILE = [
-    {'key': 'K_ESCAPE', 'value': 'main_menu'},
-    {'key': 'K_p', 'value': 'pause'},
-    {'key': 'QUIT', 'value': 'quit'},
-    {'key': 'K_q', 'value': 'quit'},
-    {'key': 'K_s', 'value': 'save'},
-    {'key': 'K_l', 'value': 'load'},
-    {'key': 'K_i', 'value': 'show_info'},
-    {'key': 'K_f', 'value': 'switch_fullscreen'},
-    {'key': 'K_F5', 'value': 'reload_resources'}
-]
-
-DEFAULT_KEYS_UP_FILE = [
-    {'key': 'K_LEFT', 'value': 'camera_stop'},
-    {'key': 'K_RIGHT', 'value': 'camera_stop'},
-    {'key': 'K_UP', 'value': 'camera_stop'},
-    {'key': 'K_DOWN', 'value': 'camera_stop'}
-]
-
-DEFAULT_MODS_FILE = [
-    {'comment': 'type here mod names and what you want (which directory) from that mod'},
-    {'comment': 'for example:'},
-    {'comment': 'awsomemod_1.3: all  # means you want all from that mod'},
-    {'comment': 'bigger_realism_0.1: frontend  # means you want only graphics and sounds from that mod'},
-    {'comment': 'subdirectories of typed directory are automatically loaded'},
-    {'comment': 'you can type more than one mod in new lines'},
-    {'comment': 'you can type the same mod more than ine time which is useful'},
-    {'comment': 'when you want to load more than one directories from the same mod'},
-    {'comment': 'mods_paths are loaded one after another from top to bottom'},
-    {'comment': 'when a more than one mod modify the same things the mod loaded later will overwrite previous mod'},
-    {'comment': 'vanilla is always loaded as the first "mod" even when it is not typed here'}
-]
-
-########################
-# FUNCTION DEFINITIONS #
-########################
-
-@debugator
-def check_if_directory_exists(dirpath):
-    print('Checking directory: {0} ...'.format(dirpath))
-    if os.path.isdir(dirpath):
-        print('OK, {0} exists.'.format(dirpath))
-        return True
-    else:
-        print('Warning:, {0} not exists.'.format(dirpath))
-        return False
-
-@debugator
-def create_directory(dirpath):
-    os.mkdir(dirpath)
-    print('Directory {0} created'.format(dirpath))
-
-@debugator
-def check_if_file_exists(filepath):
-    print('Checking file: {0} ...'.format(filepath))
-    if os.path.isfile(filepath):
-        print('OK, {0} exists.'.format(filepath))
-        return True
-    else:
-        print('Warning:, {0} not exists.'.format(filepath))
-        return False
-
-@debugator
-def create_file(filepath):
-    file = open(filepath, 'w')
-    file.close()
-    print('File {0} created'.format(filepath))
-
-@debugator
 def do_list_from_file(filepath):  # returns a list of dicts
     # load to list
     raw_list = []
@@ -164,16 +37,16 @@ def do_list_from_file(filepath):  # returns a list of dicts
         comment = None
         key = None
         value = None
-        divided_line = line.split(CONFIG_SEPS[1], 1)
+        divided_line = line.split(const.CONFIG_SEPS[1], 1)
         if len(divided_line) > 1:
             comment = divided_line[1].strip() # this is comment
-            if len(divided_line[0].split(CONFIG_SEPS[0], 1)) > 1:
-                key = divided_line[0].split(CONFIG_SEPS[0], 1)[0].strip()
-                value = divided_line[0].split(CONFIG_SEPS[0], 1)[1].strip()
+            if len(divided_line[0].split(const.CONFIG_SEPS[0], 1)) > 1:
+                key = divided_line[0].split(const.CONFIG_SEPS[0], 1)[0].strip()
+                value = divided_line[0].split(const.CONFIG_SEPS[0], 1)[1].strip()
         else:
-            if len(divided_line[0].split(CONFIG_SEPS[0], 1)) > 1:
-                key = divided_line[0].split(CONFIG_SEPS[0], 1)[0].strip()
-                value = divided_line[0].split(CONFIG_SEPS[0], 1)[1].strip()
+            if len(divided_line[0].split(const.CONFIG_SEPS[0], 1)) > 1:
+                key = divided_line[0].split(const.CONFIG_SEPS[0], 1)[0].strip()
+                value = divided_line[0].split(const.CONFIG_SEPS[0], 1)[1].strip()
         if key is not None:
             new_line.update({'key': key})
         if value is not None:
@@ -183,27 +56,28 @@ def do_list_from_file(filepath):  # returns a list of dicts
         dict_list.append(new_line)
     return dict_list
 
-@debugator
 def do_file_from_list(filepath, list):  # returns None
+    print('bede robic plik')
+    print(list)
     lines_to_write = []
     for line in list:
+        print(line)
         line_to_write = ''
         if 'key' in line:
-            line_to_write += (line['key'] + CONFIG_SEPS[0] + ' ')
+            line_to_write += (line['key'] + const.CONFIG_SEPS[0] + ' ')
         if 'value' in line:
             line_to_write += line['value']
         if 'comment' in line:
             if 'key' in line:
-                line_to_write += ('  ' + CONFIG_SEPS[1] + ' ' + line['comment'])
+                line_to_write += ('  ' + const.CONFIG_SEPS[1] + ' ' + line['comment'])
             else:
-                line_to_write += (CONFIG_SEPS[1] + ' ' + line['comment'])
+                line_to_write += (const.CONFIG_SEPS[1] + ' ' + line['comment'])
         line_to_write += os.linesep
         lines_to_write.append(line_to_write)
     file = open(filepath, 'w')
     file.writelines(lines_to_write)
     file.close()
 
-@debugator
 def do_dict_from_list(list):  # returns dictionary
     dictionary = {}
     for d in list:
@@ -220,7 +94,6 @@ def do_dict_from_list(list):  # returns dictionary
 
     return dictionary
 
-@debugator
 def upgrade_dict_from_list(dict, list):  # returns None
     for d in list:
         if 'key' in d:
@@ -232,7 +105,6 @@ def upgrade_dict_from_list(dict, list):  # returns None
         elif ',' in dict[key]:
             dict[key] = map(int, dict[key].split(','))
 
-@debugator
 def upgrade_list_from_dict(list, dict):  # returns None
     for key, value in dict.items():
         for line in list:
@@ -242,22 +114,21 @@ def upgrade_list_from_dict(list, dict):  # returns None
                         line['value'] = str(value)[1:-1]
                     else:
                         line['value'] = str(value)
-@debugator
 def do_mods(_):  # returns list of paths
     mods = []
-    mods.append({'name': VANILLA, 'dir': 'all'})  # sneaky vanilla game adding
+    mods.append({'name': const.VANILLA, 'dir': 'all'})  # sneaky vanilla game adding
     for line in _:
         if 'key' in line:
             mods.append({'name': line['key'], 'dir': line['value']})
     # now make list of fullpaths
     paths = []
     for line in mods:
-        path = MODS + sep + line['name']
+        path = const.MODS + os.sep + line['name']
         if line['dir'] != 'all':
-            for name in DIR_NAMES:
+            for name in const.DIR_NAMES:
                 if name == line['dir']:
                     # print( SUB_DIR_TREE[DIR_NAMES[name].upper()] )
-                    path += sep + SUB_DIR_TREE[DIR_NAMES[name].upper()]
+                    path += os.sep + const.SUB_DIR_TREE[const.DIR_NAMES[name].upper()]
         paths.append(path)
     print(paths)
     # now make list of all fullpaths!
@@ -269,77 +140,47 @@ def do_mods(_):  # returns list of paths
     return all_paths
 
 
-#################################
-#    CLASS CONFIG               #
-#################################
 
 
-class Config(object):
-    """
-    All methods are static, because there are no need to have more
-    than one instances of this class. I don't want to modify globals
-    in my functions so it is a class.
-    """
-    config_list = []  # list of dictionaries {'key':'string', 'value':'string', 'comment':'string'}
-    keys_down_list = []
-    keys_up_list = []
-
-    mods_list = []
-
-    config_dict = {}  # clean config_from_file (no comments, just keys and values), flat dictionary
-    keys_down_dict = {}
-    keys_up_dict = {}
-    mods_paths = ['kurwa']  # list of dictionaries (name, fullpath)
-
-
-    @staticmethod
-    @debugator
-    def setup():  # returns None
-        # create directory if needed
-        for dir in BASIC_DIR_TREE:
-            if check_if_directory_exists(dir) == False:
-                create_directory(dir)
-        # create files if needed
-        if check_if_file_exists(CONFIG_FILE) == False:
-            create_file(CONFIG_FILE)
-            do_file_from_list(CONFIG_FILE, DEFAULT_CONFIG_FILE)
-        if check_if_file_exists(KEYS_DOWN_FILE) == False:
-            create_file(KEYS_DOWN_FILE)
-            do_file_from_list(KEYS_DOWN_FILE, DEFAULT_KEYS_DOWN_FILE)
-        if check_if_file_exists(KEYS_UP_FILE) == False:
-            create_file(KEYS_UP_FILE)
-            do_file_from_list(KEYS_UP_FILE, DEFAULT_KEYS_UP_FILE)
-        if check_if_file_exists(MODS_FILE) == False:
-            create_file(MODS_FILE)
-            do_file_from_list(MODS_FILE, DEFAULT_MODS_FILE)
+def setup():  # returns None
+    # create directory if needed
+    for dir in const.BASIC_DIR_TREE:
+        if utils.check_if_directory_exists(dir) == False:
+            utils.create_directory(dir)
+    # create files if needed
+    if utils.check_if_file_exists(const.CONFIG_FILE) == False:
+        utils.create_file(const.CONFIG_FILE)
+        do_file_from_list(const.CONFIG_FILE, const.DEFAULT_CONFIG_FILE)
+    if utils.check_if_file_exists(const.KEYS_DOWN_FILE) == False:
+        utils.create_file(const.KEYS_DOWN_FILE)
+        do_file_from_list(const.KEYS_DOWN_FILE, const.DEFAULT_KEYS_DOWN_FILE)
+    if utils.check_if_file_exists(const.KEYS_UP_FILE) == False:
+        utils.create_file(const.KEYS_UP_FILE)
+        do_file_from_list(const.KEYS_UP_FILE, const.DEFAULT_KEYS_UP_FILE)
+    if utils.check_if_file_exists(const.MODS_FILE) == False:
+        utils.create_file(const.MODS_FILE)
+        do_file_from_list(const.MODS_FILE, const.DEFAULT_MODS_FILE)
 
 
-    @staticmethod
-    @debugator
-    def load_config():
-        Config.config_list = do_list_from_file(CONFIG_FILE)
-        Config.keys_down_list = do_list_from_file(KEYS_DOWN_FILE)
-        Config.keys_up_list = do_list_from_file(KEYS_UP_FILE)
-        Config.mods_list = do_list_from_file(MODS_FILE)
-        Config.config_dict = do_dict_from_list(Config.config_list)
-        Config.keys_down_dict = do_dict_from_list(Config.keys_down_list)
-        Config.keys_up_dict = do_dict_from_list(Config.keys_up_list)
-        Config.mods_paths = do_mods(Config.mods_list)
+def load_config():
+    config_list = do_list_from_file(const.CONFIG_FILE)
+    keys_down_list = do_list_from_file(const.KEYS_DOWN_FILE)
+    keys_up_list = do_list_from_file(const.KEYS_UP_FILE)
+    mods_list = do_list_from_file(const.MODS_FILE)
+    config_dict = do_dict_from_list(config_list)
+    keys_down_dict = do_dict_from_list(keys_down_list)
+    keys_up_dict = do_dict_from_list(keys_up_list)
+    mods_paths = do_mods(mods_list)
 
 
-    @staticmethod
-    def save_config():
-        upgrade_list_from_dict(Config.config_list, Config.config_dict)
-        upgrade_list_from_dict(Config.keys_down_list, Config.keys_down_dict)
-        upgrade_list_from_dict(Config.keys_up_list, Config.keys_up_dict)
-        do_file_from_list(CONFIG_FILE, Config.config_list)
-        do_file_from_list(KEYS_DOWN_FILE, Config.keys_down_list)
-        do_file_from_list(KEYS_UP_FILE, Config.keys_up_list)
+def save_config():
+    upgrade_list_from_dict(config_list, config_dict)
+    upgrade_list_from_dict(keys_down_list, keys_down_dict)
+    upgrade_list_from_dict(keys_up_list, keys_up_dict)
+    do_file_from_list(const.CONFIG_FILE, config_list)
+    do_file_from_list(const.KEYS_DOWN_FILE, keys_down_list)
+    do_file_from_list(const.KEYS_UP_FILE, keys_up_list)
 
 
-
-    @staticmethod
-    def print_sep():
-        print(CONFIG_SEPS)
-
-
+if __name__ == '__main__':
+    setup()

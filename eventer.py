@@ -1,13 +1,11 @@
 from __future__ import print_function
-import pygame, sys
+import pygame
+import sys
 from pygame.locals import *
-from config import Config as C
-import render
-import game
-from render import Render as R
-from game import Game as G
-from debugator import debugator
 
+import config
+import render
+import metagame
 
 
 class Eventer(object):
@@ -15,7 +13,6 @@ class Eventer(object):
     commands = []
     
     @staticmethod
-    # @debugator
     def handle():
         Eventer.commands = []
         for event in pygame.event.get():
@@ -37,42 +34,43 @@ class Eventer(object):
 
         for command in Eventer.commands:
             if command == 'pause':
-                G.switch_pause()
+                MetaGame.switch_pause()
             elif command == 'quit':
                 pygame.quit()
                 sys.exit()
             elif command == 'save':
-                G.save()
+                MetaGame.save()
             elif command == 'load':
-                G.load()
+                MetaGame.load()
             elif command == 'main_menu':
                 pass
             elif command == 'show_info':
-                G.show_info()
+                MetaGame.show_info()
             elif command == 'new_game':
-                G.new_game()
+                MetaGame.new_game()
             elif command == 'reload_resources':
                 C.load_config()
-                R.setup()
+                render.Render.setup()
             elif command == 'switch_fullscreen':
                 if C.config_dict['fullscreen'] == 1:
                     C.config_dict['fullscreen'] = 0
                 else:
                     C.config_dict['fullscreen'] = 1
                 R.setup()
-            elif command == 'camera_left':
-                game.Camera.is_moving_left = 1
-            elif command == 'camera_right':
-                game.Camera.is_moving_right = 1
-            elif command == 'camera_up':
-                game.Camera.is_moving_up = 1
-            elif command == 'camera_down':
-                game.Camera.is_moving_down = 1
-            elif command == 'camera_stop_left':
-                game.Camera.is_moving_left = 0
-            elif command == 'camera_stop_right':
-                game.Camera.is_moving_right = 0
-            elif command == 'camera_stop_up':
-                game.Camera.is_moving_up = 0
-            elif command == 'camera_stop_down':
-                game.Camera.is_moving_down = 0
+            elif command == 'view_left':
+                MetaGame.game.view_is_moving_left = 1
+            elif command == 'view_right':
+                MetaGame.game.view_is_moving_right = 1
+            elif command == 'view_up':
+                MetaGame.game.view_is_moving_up = 1
+            elif command == 'view_down':
+                MetaGame.game.view_is_moving_down = 1
+            elif command == 'view_stop_left':
+                MetaGame.game.view_is_moving_left = 0
+            elif command == 'view_stop_right':
+                MetaGame.game.view_is_moving_right = 0
+            elif command == 'view_stop_up':
+                MetaGame.game.view_is_moving_up = 0
+            elif command == 'view_stop_down':
+                MetaGame.game.view_is_moving_down = 0
+
