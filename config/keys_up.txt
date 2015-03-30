@@ -1,0 +1,4 @@
+K_LEFT: view_stop_left
+K_RIGHT: view_stop_right
+K_UP: view_stop_up
+K_DOWN: view_stop_down

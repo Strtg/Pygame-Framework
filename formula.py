@@ -1,10 +1,14 @@
 from __future__ import print_function
 import random
+import const
 
 UNHAPPY_GROWTH = 0.997
 GROWTH_IN_BUILDINGS = 1.002
-GRID_SIZE = 32
-PLANET_PNGS = 5
+
+
+def coord(x_or_y):
+    return x_or_y * const.GRID_SIZE
+
 
 def create_prefix(s):
     if s == 'new0':

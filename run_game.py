@@ -18,14 +18,21 @@ import config
 import render
 import metagame
 import eventer
-
+import title_screen
+import escape_screen
+import side_panel
+import camera
+import classes
 
 config.setup()
 config.load_config()
 config.save_config()
 render.setup()
 render.load_resources()
-metagame.new()
+render.setup_fps()
+metagame.setup()
+
+
 
 old_time = time.time()
 lag = 0.0
@@ -43,3 +50,6 @@ while True:
         lag -= config.config_dict['game_logic_speed']
 
     render.render()
+
+
+print(classes.how_many_on_map)

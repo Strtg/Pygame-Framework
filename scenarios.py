@@ -8,11 +8,12 @@ import sys
 scenarios = []
 
 scenarios.append({'name': 'The First Scenario',
-                  'map_width': 30,
-                  'map_height': 30,
-                  'human_players': 2,
+                  'map_width': 400,
+                  'map_height': 400,
+                  'human_players': 50,
                   'AI_players': 0,
-                  'number_of_planets': 20,
+                  'number_of_planets': 300,
+                  'percent_of_nebulas': 20,
                 })
 
 scenarios.append({'name': 'The Second Scenario',
@@ -21,6 +22,7 @@ scenarios.append({'name': 'The Second Scenario',
                   'human_players': 2,
                   'AI_players': 2,
                   'number_of_planets': 25,
+                  'percent_of_nebulas': 65,
                 })
 
 def create_map(scenario):
@@ -54,7 +56,6 @@ def create_planet_locations(scenario):
             continue
         else:
             planets_locations.append(location)
-            print location
     return planets_locations
 
 

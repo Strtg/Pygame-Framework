@@ -58,7 +58,6 @@ def do_list_from_file(filepath):  # returns a list of dicts
 
 def do_file_from_list(filepath, list):  # returns None
     print('bede robic plik')
-    print(list)
     lines_to_write = []
     for line in list:
         print(line)
@@ -149,7 +148,7 @@ def setup():  # returns None
             utils.create_directory(dir)
     # create files if needed
     if utils.check_if_file_exists(const.CONFIG_FILE) == False:
-        utils.create_file(const.CONFIG_FILE)
+        # utils.create_file(const.CONFIG_FILE)
         do_file_from_list(const.CONFIG_FILE, const.DEFAULT_CONFIG_FILE)
     if utils.check_if_file_exists(const.KEYS_DOWN_FILE) == False:
         utils.create_file(const.KEYS_DOWN_FILE)
@@ -163,6 +162,7 @@ def setup():  # returns None
 
 
 def load_config():
+    global config_list, keys_down_list, keys_up_list, mods_list, config_dict, keys_down_dict,keys_up_dict, mods_paths
     config_list = do_list_from_file(const.CONFIG_FILE)
     keys_down_list = do_list_from_file(const.KEYS_DOWN_FILE)
     keys_up_list = do_list_from_file(const.KEYS_UP_FILE)

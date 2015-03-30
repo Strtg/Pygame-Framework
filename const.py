@@ -71,7 +71,7 @@ DEFAULT_CONFIG_FILE = [
     {'key': 'fullscreen', 'value': '0'},
     {'key': 'camera_speed', 'value': '0.5'},
     {'key': 'pause_fps', 'value': '1'},
-
+    {'key': 'grid', 'value': '0'},
 ]
 
 DEFAULT_KEYS_DOWN_FILE = [
@@ -88,13 +88,15 @@ DEFAULT_KEYS_DOWN_FILE = [
     {'key': 'K_RIGHT', 'value': 'view_right'},
     {'key': 'K_UP', 'value': 'view_up'},
     {'key': 'K_DOWN', 'value': 'view_down'},
+    {'key': 'K_g', 'value': 'grid'},
+
 ]
 
 DEFAULT_KEYS_UP_FILE = [
-    {'key': 'K_LEFT', 'value': 'camera_stop'},
-    {'key': 'K_RIGHT', 'value': 'camera_stop'},
-    {'key': 'K_UP', 'value': 'camera_stop'},
-    {'key': 'K_DOWN', 'value': 'camera_stop'}
+    {'key': 'K_LEFT', 'value': 'view_stop_left'},
+    {'key': 'K_RIGHT', 'value': 'view_stop_right'},
+    {'key': 'K_UP', 'value': 'view_stop_up'},
+    {'key': 'K_DOWN', 'value': 'view_stop_down'}
 ]
 
 DEFAULT_MODS_FILE = [
@@ -110,6 +112,13 @@ DEFAULT_MODS_FILE = [
     {'comment': 'when a more than one mod modify the same things the mod loaded later will overwrite previous mod'},
     {'comment': 'vanilla is always loaded as the first "mod" even when it is not typed here'}
 ]
+
+
+GRID_SIZE = 32
+PLANET_PNGS = 5
+NEBULAS_PNGS = 5
+SPACE_PNGS = 6
+
 
 if __name__ == '__main__':
     print DEFAULT_CONFIG_FILE[0]
