@@ -9,7 +9,4 @@
 # when a more than one mod modify the same things the mod loaded later will overwrite previous mod
 # vanilla is always loaded as the first "mod" even when it is not typed here
 
-awesome: all
 total_realism: snd
-awesome: gfx
-shit_modiffications: backend

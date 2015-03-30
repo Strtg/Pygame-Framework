@@ -1,1 +1,0 @@
-# Directory for game objects' statistics
