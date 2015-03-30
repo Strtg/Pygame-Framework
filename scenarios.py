@@ -8,8 +8,8 @@ import sys
 scenarios = []
 
 scenarios.append({'name': 'The First Scenario',
-                  'map_width': 400,
-                  'map_height': 400,
+                  'map_width': 200,
+                  'map_height': 200,
                   'human_players': 50,
                   'AI_players': 0,
                   'number_of_planets': 300,
